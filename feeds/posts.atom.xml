@@ -1,5 +1,3020 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Felipe's Data Science Blog - posts</title><link href="https://data-fiend.github.io/" rel="alternate"></link><link href="https://data-fiend.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://data-fiend.github.io/</id><updated>2017-08-23T23:48:00+02:00</updated><entry><title>First Post</title><link href="https://data-fiend.github.io/first-post.html" rel="alternate"></link><published>2017-08-23T23:48:00+02:00</published><updated>2017-08-23T23:48:00+02:00</updated><author><name>Felipe</name></author><id>tag:data-fiend.github.io,2017-08-23:/first-post.html</id><content type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Felipe's Data Science Blog - posts</title><link href="https://data-fiend.github.io/" rel="alternate"></link><link href="https://data-fiend.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://data-fiend.github.io/</id><updated>2017-08-24T12:21:00+02:00</updated><entry><title>Second Post</title><link href="https://data-fiend.github.io/second-post.html" rel="alternate"></link><published>2017-08-24T12:21:00+02:00</published><updated>2017-08-24T12:21:00+02:00</updated><author><name>Felipe</name></author><id>tag:data-fiend.github.io,2017-08-24:/second-post.html</id><summary type="html">
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Vamos explorar os dados resultantes do Exame Nacional do Ensino Médio (Enem) usando R. Para começar, baixei os dados do enem de 2015 do site do Instituto Nacional de Estudos e Pesquisas Anísio Teixeira (INEP):&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://portal.inep.gov.br/microdados"&gt;http://portal.inep.gov.br/microdados&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;O arquivo "microdados_enem2015" contem vários arquivos, uncluindo uma planilha que explica as variaveis usadas nos dados estatisticos:&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell &gt; div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area &gt; div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area &gt; div.highlight &gt; pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the &lt;head&gt; if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev &lt;Maniac@SoftwareManiacs.Org&gt;
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell &gt; div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+&lt;/style&gt;
+&lt;style type="text/css"&gt;.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;
+&lt;style type="text/css"&gt;
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+&lt;/style&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Vamos explorar os dados resultantes do Exame Nacional do Ensino Médio (Enem) usando R. Para começar, baixei os dados do enem de 2015 do site do Instituto Nacional de Estudos e Pesquisas Anísio Teixeira (INEP):&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://portal.inep.gov.br/microdados"&gt;http://portal.inep.gov.br/microdados&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;O arquivo "microdados_enem2015" contem vários arquivos, uncluindo uma planilha que explica as variaveis usadas nos dados estatisticos:&lt;/p&gt;
+&lt;p&gt;microdados_enem2015\microdados_enem_2015\DICIONÁRIO\Dicionário_Microdados_Enem_2015.xlsx&lt;/p&gt;
+&lt;p&gt;e os dados em si:&lt;/p&gt;
+&lt;p&gt;\microdados_enem2015\microdados_enem_2015\DADOS\MICRODADOS_ENEM_2015.csv&lt;/p&gt;
+&lt;p&gt;O arquivo csv tem 166 variaveis (colunas) e 7746428 linhas! Esse ultimo número corresponde a todas as pessoas que fizeram a prova em 2015. As 166 variaveis do arquivo correspondem a dados dos alunos (UF de residência, idade, sexo, etc). Cinqüenta dessas variáveis correspondem às questões do questionário socio-econômico, ao qual os alunos devem responder. Além disso, o arquivo contem 5 notas do enem para cada aluno: ciencias da natureza, linguagens e códigos , ciencias humanas, matemática e redação. Essas ultimas variaveis dependentes que gostaria de analisar.&lt;/p&gt;
+&lt;p&gt;Comecei a explorar os dados depois de ter carregado somente as primeiras linhas do arquivo csv:&lt;/p&gt;
+&lt;p&gt;read.csv(file="MICRODADOS_ENEM_2015.csv",nrows=500)&lt;/p&gt;
+&lt;p&gt;O arquivo csv inteiro ocupa quase 5 GB de memoria. Eu tentei ler tudo na memoria viva (RAM) do meu computador, mas demorou um tempão e reparei que esse metodo não ia dar certo, pois o computador ia ficar muito lento. O problema é que o R lê todos os dados diretamente na memoria viva do computador, que é bastante limitada.&lt;/p&gt;
+&lt;p&gt;Como fazer esta seleção sem carregar o arquivo inteiro na memória viva? Eu usei um modulo para R chamado "sqldf", que permite fazer esta seleção por meio de um comando sql do tipo "SELECT FROM" ao mesmo tempo em que o arquivo é carregado.&lt;/p&gt;
+&lt;p&gt;Decidi que gostaria limitar o grupo de alunos de acordo com o valor de certas variaveis. Limitei-me inicialmente aos alunos paranense (porque sou paranaense), mas depois de eliminar mais alunos de acordo com outras variaveis, notei que a minha amostra ficaria pequena demais. Além disso havia inicialmente restrito a minha análise à nota de matemática, deixando de lado as outras notas.&lt;/p&gt;
+&lt;p&gt;Num segundo tempo, pensei em fazer a análise com os alunos do estado de São Paulo, por ser o mais populoso. Porém, me dei conta de que conseguiria usar os resultados do Brasil inteiro, se fizesse uma boa limpeza nos dados.&lt;/p&gt;
+&lt;p&gt;Finalmente acabei selecionando alunos sem necessidades especiais e que se declaram brancos. Quanto à primeira escolha, achei que seria melhor comparar alunos que estão em pé de igualdade, quanto às necessidades especiais. Além disso as necessidades especiais são muito variadas e há uma grande quantidade de variaveis que dizem respeito às necessidades especiais dos alunos, o que tornava o conjunto de dados muito grande e complicava a analise.&lt;/p&gt;
+&lt;p&gt;Quanto à escolha em relação a raça, foi simplesmente um jeito de limitar o tamanho do conjunto de dados. Além disso, eu suspeito que a raça/cor do aluno tenha uma correlação alta com outros fatores (ex: renda familiar) e preferi me ater à raça (levemente) majoritária.&lt;/p&gt;
+&lt;p&gt;Em ultimo lugar, eliminei as perguntas do tipo "Indique a importância de cada um dos motivos abaixo na sua decisão de trabalhar" (Q027-Q033), pois só poderiam ser respondidas por alunos que já exerceram atividade remunerada (Q026). Também eliminei as questões "Indique os motivos que levaram você a participar do ENEM", por achar que são muito subjetivas.&lt;/p&gt;
+&lt;p&gt;As questões mencionadas no paragrafo acima podem ser interessantes, e não seria mal inclui-las na análise. Porém, meu objetivo é fazer uma análise com um máximo de alunos que não tenham deixado nenhuma questão em branco (casos completos), sem estourar a memória do meu computador. Além disso gostaria de poder interpretar o meu modelo, para poder dar sugestões de como melhor o desempenho dos alunos no ENEM. As questões que mantive no conjunto de dados se acabaram ficando restritas a aquelas que tratam, stricto sensu, dos fator socio-ecônomicos dos alunos.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;sqldf&lt;span class="p"&gt;)&lt;/span&gt;
+enem_br&lt;span class="o"&gt;=&lt;/span&gt;read.csv.sql&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"MICRODADOS_ENEM_2015.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;sql&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"select * from file&lt;/span&gt;
+&lt;span class="s"&gt;                                                                where (CO_PROVA_MT =243 OR CO_PROVA_MT =244)&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_MT=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_CN=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_CH=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_LC=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_TREINEIRO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_NACIONALIDADE =1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_ESTUDA_CLASSE_HOSPITALAR =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_BAIXA_VISAO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_CEGUEIRA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_SURDEZ =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIENCIA_AUDITIVA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_SURDO_CEGUEIRA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIENCIA_FISICA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIENCIA_MENTAL =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIT_ATENCAO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DISLEXIA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_GESTANTE =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_LACTANTE =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_IDOSO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DISCALCULIA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_AUTISMO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_VISAO_MONOCULAR =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_SABATISTA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_OUTRA_DEF =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_COR_RACA=1"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stderr output_text"&gt;
+&lt;pre&gt;Warning message:
+"package 'sqldf' was built under R version 3.4.1"Loading required package: gsubfn
+Warning message:
+"package 'gsubfn' was built under R version 3.4.1"Loading required package: proto
+Warning message:
+"package 'proto' was built under R version 3.4.1"Loading required package: RSQLite
+Warning message:
+"package 'RSQLite' was built under R version 3.4.1"Warning message:
+"closing unused connection 4 (MICRODADOS_ENEM_2015.csv)"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_ESCOLA`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_MUNICIPIO_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_UF_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_DEPENDENCIA_ADM_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_LOCALIZACAO_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_SIT_FUNC_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `NU_IDADE`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_ENSINO`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_ESTADO_CIVIL`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_UF_ENTIDADE_CERTIFICACAO`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q005`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q029`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q030`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q031`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q032`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q033`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q034`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q035`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q036`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q037`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q038`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q039`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q040`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q041`: mixed type, first seen values of type integer, coercing other values of type string"&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Salvei os dados obtidos com o comando sql em um arquivo novo (já muito menor):&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;write.csv&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"enem_proc2.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;No primeiro comando sql, selecionei somente os alunos que tinham feito as provas de matemática amarela e cinza (CO_PROVA_MT =243 OR CO_PROVA_MT =244).
+Foi um metodo de criar conjuntos de dados menores de cada vez, assim evitando um crash do meu computador (que é meio velho).&lt;/p&gt;
+&lt;p&gt;O comando abaixo seleciona os alunos que fizeram as provas azul e rosa.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;read.csv.sql&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"MICRODADOS_ENEM_2015.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;sql&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"select * from file&lt;/span&gt;
+&lt;span class="s"&gt;                                                                where (CO_PROVA_MT =245 OR CO_PROVA_MT =246)&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_MT=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_CN=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_CH=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_PRESENCA_LC=1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_TREINEIRO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_NACIONALIDADE =1&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_ESTUDA_CLASSE_HOSPITALAR =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_BAIXA_VISAO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_CEGUEIRA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_SURDEZ =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIENCIA_AUDITIVA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_SURDO_CEGUEIRA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIENCIA_FISICA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIENCIA_MENTAL =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DEFICIT_ATENCAO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DISLEXIA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_GESTANTE =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_LACTANTE =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_IDOSO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_DISCALCULIA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_AUTISMO =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_VISAO_MONOCULAR =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_SABATISTA =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  IN_OUTRA_DEF =0&lt;/span&gt;
+&lt;span class="s"&gt;                                                                AND  TP_COR_RACA=1"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stderr output_text"&gt;
+&lt;pre&gt;Warning message:
+"closing unused connection 4 (MICRODADOS_ENEM_2015.csv)"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_ESCOLA`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_MUNICIPIO_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_UF_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_DEPENDENCIA_ADM_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_LOCALIZACAO_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_SIT_FUNC_ESC`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `NU_IDADE`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_ENSINO`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `TP_ESTADO_CIVIL`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `CO_UF_ENTIDADE_CERTIFICACAO`: mixed type, first seen values of type string, coercing other values of type integer"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q005`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q029`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q030`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q031`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q032`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q033`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q034`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q035`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q036`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q037`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q038`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q039`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q040`: mixed type, first seen values of type integer, coercing other values of type string"Warning message in rsqlite_fetch(res@ptr, n = n):
+"Column `Q041`: mixed type, first seen values of type integer, coercing other values of type string"&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;write.csv&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"enem_proc3.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Nas linhas abaixo, eu carrego os arquivos criados acima, já eliminando as colunas que não vou usar. 
+Depois disso, uno os dois conjuntos de dados em um só (enem_br), usando o comando rbind (já que os dois conjuntos tem as mesmas colunas)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [44]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;data.table&lt;span class="p"&gt;)&lt;/span&gt;
+enem1&lt;span class="o"&gt;=&lt;/span&gt;fread&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"enem_proc2.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;drop&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;7&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;17&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;30&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;81&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;82&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;93&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;94&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;97&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;102&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;117&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;144&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;158&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;data.table&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; na.strings&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"NA"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;Read 859664 rows and 53 (of 167) columns from 0.752 GB file in 00:01:06
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [45]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem2&lt;span class="o"&gt;=&lt;/span&gt;fread&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"enem_proc3.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;drop&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;7&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;17&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;30&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;81&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;82&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;93&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;94&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;97&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;102&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;117&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;144&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;158&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;data.table&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; na.strings&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"NA"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;Read 827055 rows and 53 (of 167) columns from 0.723 GB file in 00:00:42
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Observação: ao carregar os dados assim, também evito ter que transformar certas variaveis em variaveis do tipo fator, já que isso é feito automaticamente quando o arquivo é carregador&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [46]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;rbind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem1&lt;span class="p"&gt;,&lt;/span&gt;enem2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [47]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;'data.frame':	1686719 obs. of  53 variables:
+ $ CO_MUNICIPIO_RESIDENCIA: int  4203709 3550308 3557105 5107602 4118501 3304557 4115804 3551504 4101804 4106902 ...
+ $ NO_MUNICIPIO_RESIDENCIA: chr  "Canelinha" "S&lt;e3&gt;o Paulo" "Votuporanga" "Rondon&lt;f3&gt;polis" ...
+ $ CO_UF_RESIDENCIA       : int  42 35 35 51 41 33 41 35 41 41 ...
+ $ NU_IDADE               : int  19 25 22 18 20 20 20 18 24 17 ...
+ $ TP_SEXO                : chr  "M" "M" "M" "M" ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4202909 2111300 3550308 5107602 5108600 3304557 4115804 2313203 4101804 4106902 ...
+ $ NO_MUNICIPIO_NASCIMENTO: chr  "Brusque" "S&lt;e3&gt;o Lu&lt;ed&gt;s" "S&lt;e3&gt;o Paulo" "Rondon&lt;f3&gt;polis" ...
+ $ CO_UF_NASCIMENTO       : int  42 21 35 51 51 33 41 23 41 41 ...
+ $ SG_UF_NASCIMENTO       : chr  "SC" "MA" "SP" "MT" ...
+ $ TP_ST_CONCLUSAO        : int  1 1 1 1 1 1 1 1 1 2 ...
+ $ TP_ANO_CONCLUIU        : int  3 9 6 2 4 4 3 2 6 0 ...
+ $ TP_ESCOLA              : int  1 1 1 1 1 1 1 1 1 3 ...
+ $ TP_ENSINO              : chr  NA NA NA NA ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NU_NOTA_CN             : num  599 477 523 589 437 ...
+ $ NU_NOTA_CH             : num  658 553 580 650 590 ...
+ $ NU_NOTA_LC             : num  579 524 595 588 530 ...
+ $ NU_NOTA_MT             : num  576 430 562 591 496 ...
+ $ Q001                   : chr  "D" "H" "F" "B" ...
+ $ Q002                   : chr  "C" "E" "B" "E" ...
+ $ Q003                   : chr  "B" "A" "F" "C" ...
+ $ Q004                   : chr  "F" "A" "B" "F" ...
+ $ Q005                   : int  4 6 4 5 7 5 5 5 2 4 ...
+ $ Q006                   : chr  "F" "D" "D" "E" ...
+ $ Q007                   : chr  "A" "A" "A" "A" ...
+ $ Q008                   : chr  "D" "B" "B" "B" ...
+ $ Q009                   : chr  "C" "B" "D" "C" ...
+ $ Q010                   : chr  "B" "A" "A" "B" ...
+ $ Q011                   : chr  "A" "A" "A" "A" ...
+ $ Q012                   : chr  "B" "B" "B" "B" ...
+ $ Q013                   : chr  "B" "A" "A" "B" ...
+ $ Q014                   : chr  "B" "A" "B" "B" ...
+ $ Q015                   : chr  "A" "A" "A" "A" ...
+ $ Q016                   : chr  "B" "A" "A" "A" ...
+ $ Q017                   : chr  "A" "A" "A" "A" ...
+ $ Q018                   : chr  "B" "A" "A" "A" ...
+ $ Q019                   : chr  "D" "B" "B" "B" ...
+ $ Q020                   : chr  "A" "B" "A" "A" ...
+ $ Q021                   : chr  "B" "A" "A" "A" ...
+ $ Q022                   : chr  "D" "E" "C" "E" ...
+ $ Q023                   : chr  "B" "B" "B" "B" ...
+ $ Q024                   : chr  "C" "B" "B" "B" ...
+ $ Q025                   : chr  "B" "B" "B" "B" ...
+ $ Q026                   : chr  "C" "C" "B" "B" ...
+ $ Q042                   : chr  "C" "A" "A" "B" ...
+ $ Q043                   : chr  "A" "A" "A" "A" ...
+ $ Q044                   : chr  "A" "A" "A" "A" ...
+ $ Q045                   : chr  "A" "A" "A" "A" ...
+ $ Q046                   : chr  "A" "A" "A" "A" ...
+ $ Q047                   : chr  "D" "A" "A" "A" ...
+ $ Q048                   : chr  "A" "A" "A" "A" ...
+ $ Q049                   : chr  "A" "A" "B" "A" ...
+ $ Q050                   : chr  "A" "A" "A" "A" ...
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Eliminando todos os alunos que deixaram de responder a alguma das questões relevantes. Em outras palavras, mantendo só os casos completos&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [48]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;enem_br&lt;span class="p"&gt;[&lt;/span&gt;complete.cases&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [49]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;'data.frame':	558022 obs. of  53 variables:
+ $ CO_MUNICIPIO_RESIDENCIA: int  4106902 2913606 3550308 3525904 4205902 2111300 3118304 4108403 3300456 4311403 ...
+ $ NO_MUNICIPIO_RESIDENCIA: chr  "Curitiba" "Ilh&lt;e9&gt;us" "S&lt;e3&gt;o Paulo" "Jundia&lt;ed&gt;" ...
+ $ CO_UF_RESIDENCIA       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ NU_IDADE               : int  17 17 17 17 17 18 18 17 17 20 ...
+ $ TP_SEXO                : chr  "F" "M" "F" "F" ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4106902 2913606 3550308 3550308 4214805 2111300 3118304 4107207 3300456 4323200 ...
+ $ NO_MUNICIPIO_NASCIMENTO: chr  "Curitiba" "Ilh&lt;e9&gt;us" "S&lt;e3&gt;o Paulo" "S&lt;e3&gt;o Paulo" ...
+ $ CO_UF_NASCIMENTO       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ SG_UF_NASCIMENTO       : chr  "PR" "BA" "SP" "SP" ...
+ $ TP_ST_CONCLUSAO        : int  2 2 2 2 2 2 2 2 2 2 ...
+ $ TP_ANO_CONCLUIU        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ TP_ESCOLA              : int  3 3 3 2 2 3 3 2 2 2 ...
+ $ TP_ENSINO              : chr  "1" "1" "1" "1" ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NU_NOTA_CN             : num  645 659 596 496 574 ...
+ $ NU_NOTA_CH             : num  694 653 722 618 614 ...
+ $ NU_NOTA_LC             : num  656 618 668 586 454 ...
+ $ NU_NOTA_MT             : num  780 732 741 648 463 ...
+ $ Q001                   : chr  "F" "E" "D" "G" ...
+ $ Q002                   : chr  "E" "C" "F" "G" ...
+ $ Q003                   : chr  "E" "B" "D" "E" ...
+ $ Q004                   : chr  "E" "B" "D" "E" ...
+ $ Q005                   : int  4 3 5 3 3 4 3 3 4 3 ...
+ $ Q006                   : chr  "J" "C" "L" "N" ...
+ $ Q007                   : chr  "D" "A" "A" "A" ...
+ $ Q008                   : chr  "E" "B" "C" "B" ...
+ $ Q009                   : chr  "D" "C" "D" "C" ...
+ $ Q010                   : chr  "D" "A" "B" "C" ...
+ $ Q011                   : chr  "A" "A" "A" "A" ...
+ $ Q012                   : chr  "B" "B" "B" "B" ...
+ $ Q013                   : chr  "B" "B" "B" "A" ...
+ $ Q014                   : chr  "B" "B" "B" "B" ...
+ $ Q015                   : chr  "B" "A" "A" "A" ...
+ $ Q016                   : chr  "B" "B" "B" "A" ...
+ $ Q017                   : chr  "A" "A" "B" "A" ...
+ $ Q018                   : chr  "B" "A" "B" "A" ...
+ $ Q019                   : chr  "D" "C" "C" "D" ...
+ $ Q020                   : chr  "B" "B" "B" "B" ...
+ $ Q021                   : chr  "B" "A" "A" "B" ...
+ $ Q022                   : chr  "D" "C" "D" "E" ...
+ $ Q023                   : chr  "B" "B" "B" "A" ...
+ $ Q024                   : chr  "D" "B" "B" "A" ...
+ $ Q025                   : chr  "B" "B" "B" "B" ...
+ $ Q026                   : chr  "A" "A" "A" "A" ...
+ $ Q042                   : chr  "C" "C" "C" "A" ...
+ $ Q043                   : chr  "A" "A" "A" "A" ...
+ $ Q044                   : chr  "A" "A" "A" "A" ...
+ $ Q045                   : chr  "A" "A" "A" "A" ...
+ $ Q046                   : chr  "B" "B" "B" "B" ...
+ $ Q047                   : chr  "D" "E" "D" "A" ...
+ $ Q048                   : chr  "A" "A" "A" "A" ...
+ $ Q049                   : chr  "A" "A" "A" "A" ...
+ $ Q050                   : chr  "A" "A" "A" "A" ...
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [50]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;write.csv&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"enem_completo.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"enem_completo.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;TP_ST_CONCLUSAO&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+     2 
+558022 &lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [68]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;TP_ANO_CONCLUIU&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+     0 
+558022 &lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [53]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;TP_ESCOLA&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+     2      3 
+387920 170102 &lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [69]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;Q026&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+     A      B      C 
+372743  79486 105793 &lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;TP_ST_CONCLUSAO&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;NULL&lt;/span&gt;
+enem_br&lt;span class="o"&gt;$&lt;/span&gt;TP_ANO_CONCLUIU&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;NULL&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Inicialmente, estudei somente os resultados das provas de matemática, mas depois decidi simplesmente fazer uma média de todas as notas.
+A exceção foi a nota de redação, pois sua avaliação é muito mais complexa (ver a parte "dados da redação" no dicionário).&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [71]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;NOTA&lt;span class="o"&gt;=&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_CN&lt;span class="o"&gt;+&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_CH&lt;span class="o"&gt;+&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_LC&lt;span class="o"&gt;+&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_MT
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [72]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;NOTA&lt;span class="o"&gt;=&lt;/span&gt;NOTA&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [73]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="o"&gt;=&lt;/span&gt;NOTA
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [74]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;'data.frame':	558022 obs. of  53 variables:
+ $ X                      : int  10 36 39 40 62 76 85 90 93 101 ...
+ $ CO_MUNICIPIO_RESIDENCIA: int  4106902 2913606 3550308 3525904 4205902 2111300 3118304 4108403 3300456 4311403 ...
+ $ NO_MUNICIPIO_RESIDENCIA: Factor w/ 5228 levels "&lt;c1&gt;gua Azul do Norte",..: 1424 2058 4303 2502 1791 4260 1288 1747 558 2575 ...
+ $ CO_UF_RESIDENCIA       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ NU_IDADE               : int  17 17 17 17 17 18 18 17 17 20 ...
+ $ TP_SEXO                : Factor w/ 2 levels "F","M": 1 2 1 1 2 1 1 2 1 2 ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4106902 2913606 3550308 3550308 4214805 2111300 3118304 4107207 3300456 4323200 ...
+ $ NO_MUNICIPIO_NASCIMENTO: Factor w/ 4873 levels "&lt;c1&gt;gua Azul do Norte",..: 1323 1915 4019 4019 3713 3981 1199 1390 531 4805 ...
+ $ CO_UF_NASCIMENTO       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ SG_UF_NASCIMENTO       : Factor w/ 27 levels "AC","AL","AM",..: 18 5 26 26 24 10 11 18 19 23 ...
+ $ TP_ESCOLA              : int  3 3 3 2 2 3 3 2 2 2 ...
+ $ TP_ENSINO              : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NU_NOTA_CN             : num  645 659 596 496 574 ...
+ $ NU_NOTA_CH             : num  694 653 722 618 614 ...
+ $ NU_NOTA_LC             : num  656 618 668 586 454 ...
+ $ NU_NOTA_MT             : num  780 732 741 648 463 ...
+ $ Q001                   : Factor w/ 8 levels "A","B","C","D",..: 6 5 4 7 2 8 7 5 8 4 ...
+ $ Q002                   : Factor w/ 8 levels "A","B","C","D",..: 5 3 6 7 3 8 5 5 4 5 ...
+ $ Q003                   : Factor w/ 6 levels "A","B","C","D",..: 5 2 4 5 3 5 5 1 2 3 ...
+ $ Q004                   : Factor w/ 6 levels "A","B","C","D",..: 5 2 4 5 3 5 4 2 2 3 ...
+ $ Q005                   : int  4 3 5 3 3 4 3 3 4 3 ...
+ $ Q006                   : Factor w/ 17 levels "A","B","C","D",..: 10 3 12 14 9 7 10 6 3 7 ...
+ $ Q007                   : Factor w/ 4 levels "A","B","C","D": 4 1 1 1 1 2 1 1 1 1 ...
+ $ Q008                   : Factor w/ 5 levels "A","B","C","D",..: 5 2 3 2 3 3 2 2 2 2 ...
+ $ Q009                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 4 3 4 4 3 4 3 3 ...
+ $ Q010                   : Factor w/ 5 levels "A","B","C","D",..: 4 1 2 3 2 3 2 2 1 2 ...
+ $ Q011                   : Factor w/ 5 levels "A","B","C","D",..: 1 1 1 1 1 1 1 2 1 1 ...
+ $ Q012                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 2 2 2 2 2 2 2 ...
+ $ Q013                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 1 2 1 1 2 1 2 ...
+ $ Q014                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 2 3 2 1 2 2 2 ...
+ $ Q015                   : Factor w/ 5 levels "A","B","C","D",..: 2 1 1 1 1 1 1 1 1 1 ...
+ $ Q016                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 1 2 2 2 2 2 2 ...
+ $ Q017                   : Factor w/ 5 levels "A","B","C","D",..: 1 1 2 1 1 1 1 1 1 1 ...
+ $ Q018                   : Factor w/ 2 levels "A","B": 2 1 2 1 2 1 1 1 2 2 ...
+ $ Q019                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 3 4 4 4 2 3 4 3 ...
+ $ Q020                   : Factor w/ 2 levels "A","B": 2 2 2 2 2 1 2 2 2 2 ...
+ $ Q021                   : Factor w/ 2 levels "A","B": 2 1 1 2 2 1 2 1 2 1 ...
+ $ Q022                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 4 5 4 5 4 5 5 4 ...
+ $ Q023                   : Factor w/ 2 levels "A","B": 2 2 2 1 2 1 1 1 2 1 ...
+ $ Q024                   : Factor w/ 5 levels "A","B","C","D",..: 4 2 2 1 2 2 3 3 2 2 ...
+ $ Q025                   : Factor w/ 2 levels "A","B": 2 2 2 2 2 1 2 2 2 1 ...
+ $ Q026                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 3 ...
+ $ Q042                   : Factor w/ 8 levels "A","B","C","D",..: 3 3 3 1 1 4 3 1 1 1 ...
+ $ Q043                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q044                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q045                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 2 ...
+ $ Q046                   : Factor w/ 4 levels "A","B","C","D": 2 2 2 2 2 2 2 2 2 2 ...
+ $ Q047                   : Factor w/ 5 levels "A","B","C","D",..: 4 5 4 1 1 4 1 1 1 1 ...
+ $ Q048                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q049                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 2 1 1 1 1 2 ...
+ $ Q050                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ NOTA                   : num  694 666 682 587 526 ...
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [75]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_CN&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;NULL&lt;/span&gt;
+enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_CH&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;NULL&lt;/span&gt;
+enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_LC&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;NULL&lt;/span&gt;
+enem_br&lt;span class="o"&gt;$&lt;/span&gt;NU_NOTA_MT&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;NULL&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [76]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;write.csv&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"enem_completo_nota.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"enem_completo_nota.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;O comando abaixo elimina todos os níveis (possíveis respostas, neste caso) das variaveis tipo fator que 
+aparecem dez vezes ou menos no conjunto de dados. Fiz isso pois, fazendo certos testes em conjuntos menores, reparei que
+muitas vezes essas respostas não apareciam no conjunto de treino para os algoritmos de regressão, mas apareciam no conjunto de teste.
+Isso causava problemas, pois o modelo não tinha coeficientes correspondentes a essas respostas. O código também elimina os alunos que 
+haviam selecionado essas respostas (mantendo assim somente os "casos completos")&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_b&lt;span class="o"&gt;=&lt;/span&gt;enem_br
+&lt;span class="kr"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;i &lt;span class="kr"&gt;in&lt;/span&gt; &lt;span class="m"&gt;13&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;62&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+ enem_b &lt;span class="o"&gt;=&lt;/span&gt; enem_b&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_b&lt;span class="p"&gt;[[&lt;/span&gt;i&lt;span class="p"&gt;]])&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_b&lt;span class="p"&gt;[[&lt;/span&gt;i&lt;span class="p"&gt;]])&lt;/span&gt;&lt;span class="o"&gt;&lt;&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)),]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+enem_b&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;droplevels&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_b&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stderr output_text"&gt;
+&lt;pre&gt;Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"Warning message in as.numeric(enem_b[[i]]) %in% which(table(enem_b[[i]]) &lt; 10):
+"NAs introduced by coercion"&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [15]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;enem_b
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [61]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_html rendered_html output_subarea "&gt;
+558022
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [25]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;enem_br&lt;span class="o"&gt;=&lt;/span&gt;enem_br&lt;span class="p"&gt;[&lt;/span&gt;complete.cases&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [78]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_html rendered_html output_subarea "&gt;
+558022
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Definição da formula para a regressão linear&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;f&lt;span class="o"&gt;=&lt;/span&gt;NOTA &lt;span class="o"&gt;~&lt;/span&gt; NU_IDADE &lt;span class="o"&gt;+&lt;/span&gt; TP_SEXO &lt;span class="o"&gt;+&lt;/span&gt; TP_ESTADO_CIVIL &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q001 &lt;span class="o"&gt;+&lt;/span&gt; Q002 &lt;span class="o"&gt;+&lt;/span&gt; Q003 &lt;span class="o"&gt;+&lt;/span&gt; Q004 &lt;span class="o"&gt;+&lt;/span&gt; Q005 &lt;span class="o"&gt;+&lt;/span&gt; Q006 &lt;span class="o"&gt;+&lt;/span&gt; Q007 &lt;span class="o"&gt;+&lt;/span&gt; Q008 &lt;span class="o"&gt;+&lt;/span&gt; Q009 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q010 &lt;span class="o"&gt;+&lt;/span&gt; Q011 &lt;span class="o"&gt;+&lt;/span&gt; Q012 &lt;span class="o"&gt;+&lt;/span&gt; Q013 &lt;span class="o"&gt;+&lt;/span&gt; Q014 &lt;span class="o"&gt;+&lt;/span&gt; Q015 &lt;span class="o"&gt;+&lt;/span&gt; Q016 &lt;span class="o"&gt;+&lt;/span&gt; Q017 &lt;span class="o"&gt;+&lt;/span&gt; Q018 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q019 &lt;span class="o"&gt;+&lt;/span&gt; Q020 &lt;span class="o"&gt;+&lt;/span&gt; Q021 &lt;span class="o"&gt;+&lt;/span&gt; Q022 &lt;span class="o"&gt;+&lt;/span&gt; Q023 &lt;span class="o"&gt;+&lt;/span&gt; Q024 &lt;span class="o"&gt;+&lt;/span&gt; Q025 &lt;span class="o"&gt;+&lt;/span&gt; Q026 &lt;span class="o"&gt;+&lt;/span&gt; Q042 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q043 &lt;span class="o"&gt;+&lt;/span&gt; Q044 &lt;span class="o"&gt;+&lt;/span&gt; Q045 &lt;span class="o"&gt;+&lt;/span&gt; Q046 &lt;span class="o"&gt;+&lt;/span&gt; Q047 &lt;span class="o"&gt;+&lt;/span&gt; Q048 &lt;span class="o"&gt;+&lt;/span&gt; Q049 &lt;span class="o"&gt;+&lt;/span&gt; Q050
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Na verdade, a formula acima foi copiada de um outro arquivo em que fiz os testes. A formula foi gerada usando um comando do tipo:&lt;/p&gt;
+&lt;p&gt;f = as.formula(paste('NU_NOTA_MT ~', paste(colnames(enem_test)[3:4], collapse='+'),"+",paste(colnames(enem_test)[9:11], collapse='+'),"+",paste(colnames(enem_test)[13:62], collapse='+')))&lt;/p&gt;
+&lt;p&gt;para não ter que escrever o nome de cada variavel, uma por uma.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Separando o conjunto num conjunto de treino e um conjunto de teste
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;caTools&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;93&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+spl &lt;span class="o"&gt;=&lt;/span&gt; sample.split&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;,&lt;/span&gt; SplitRatio &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;train &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;,&lt;/span&gt; spl&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+test &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;,&lt;/span&gt; spl&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;write.csv&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"train.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [10]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;write.csv&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"test.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Fazendo a regressão linear&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [22]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;reg&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;f&lt;span class="p"&gt;,&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [23]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;reg_pred &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;reg&lt;span class="p"&gt;,&lt;/span&gt; newdata&lt;span class="o"&gt;=&lt;/span&gt;test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [86]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;reg&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+Call:
+lm(formula = f, data = train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-437.19  -37.39   -1.62   36.08  348.74 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     468.96413    2.93836 159.601  &lt; 2e-16 ***
+NU_IDADE         -0.05175    0.04485  -1.154 0.248594    
+TP_SEXOM         14.56583    0.20134  72.346  &lt; 2e-16 ***
+TP_ESTADO_CIVIL   0.19803    0.65324   0.303 0.761778    
+Q001B             2.52493    0.83331   3.030 0.002446 ** 
+Q001C             5.04681    0.84830   5.949 2.70e-09 ***
+Q001D             4.14033    0.85859   4.822 1.42e-06 ***
+Q001E             7.06937    0.84734   8.343  &lt; 2e-16 ***
+Q001F            15.22054    0.90177  16.879  &lt; 2e-16 ***
+Q001G            16.91284    0.95474  17.715  &lt; 2e-16 ***
+Q001H             6.94472    0.91742   7.570 3.75e-14 ***
+Q002B             1.46409    0.99303   1.474 0.140384    
+Q002C             2.85518    1.00054   2.854 0.004323 ** 
+Q002D             1.49914    1.00517   1.491 0.135851    
+Q002E             4.50741    0.99627   4.524 6.06e-06 ***
+Q002F            11.10298    1.04002  10.676  &lt; 2e-16 ***
+Q002G            10.58019    1.06318   9.951  &lt; 2e-16 ***
+Q002H            -3.00917    1.15712  -2.601 0.009307 ** 
+Q003B             0.51085    0.46222   1.105 0.269077    
+Q003C             2.91492    0.43630   6.681 2.38e-11 ***
+Q003D             7.75878    0.47012  16.504  &lt; 2e-16 ***
+Q003E             6.84394    0.60767  11.263  &lt; 2e-16 ***
+Q003F            -1.09007    0.51257  -2.127 0.033447 *  
+Q004B             0.10712    0.48121   0.223 0.823851    
+Q004C             0.71099    0.57396   1.239 0.215436    
+Q004D            -0.23617    0.53916  -0.438 0.661361    
+Q004E             5.11504    0.69379   7.373 1.68e-13 ***
+Q004F            -1.55857    0.55445  -2.811 0.004939 ** 
+Q005             -2.41564    0.08606 -28.070  &lt; 2e-16 ***
+Q006B            -1.05680    0.97094  -1.088 0.276406    
+Q006C             5.20913    0.97107   5.364 8.13e-08 ***
+Q006D            11.63127    0.99510  11.689  &lt; 2e-16 ***
+Q006E            13.80278    1.01306  13.625  &lt; 2e-16 ***
+Q006F            14.33855    1.01480  14.129  &lt; 2e-16 ***
+Q006G            19.30493    1.02130  18.902  &lt; 2e-16 ***
+Q006H            22.35623    1.05821  21.126  &lt; 2e-16 ***
+Q006I            23.86101    1.08471  21.998  &lt; 2e-16 ***
+Q006J            24.69909    1.09761  22.503  &lt; 2e-16 ***
+Q006K            28.59203    1.14387  24.996  &lt; 2e-16 ***
+Q006L            30.59607    1.23654  24.743  &lt; 2e-16 ***
+Q006M            34.22159    1.33074  25.716  &lt; 2e-16 ***
+Q006N            35.83289    1.22095  29.348  &lt; 2e-16 ***
+Q006O            39.83368    1.23154  32.345  &lt; 2e-16 ***
+Q006P            45.71867    1.26070  36.265  &lt; 2e-16 ***
+Q006Q            55.27764    1.25032  44.211  &lt; 2e-16 ***
+Q007B             1.82455    0.43263   4.217 2.47e-05 ***
+Q007C             6.91194    0.82656   8.362  &lt; 2e-16 ***
+Q007D             5.55363    0.54846  10.126  &lt; 2e-16 ***
+Q008B             2.80275    1.68077   1.668 0.095408 .  
+Q008C             4.68837    1.69649   2.764 0.005718 ** 
+Q008D             8.26352    1.72961   4.778 1.77e-06 ***
+Q008E            12.35095    1.78898   6.904 5.07e-12 ***
+Q009B            -9.05854    1.74893  -5.179 2.23e-07 ***
+Q009C           -10.61265    1.72294  -6.160 7.30e-10 ***
+Q009D            -9.86845    1.73149  -5.699 1.20e-08 ***
+Q009E            -9.84862    1.77452  -5.550 2.86e-08 ***
+Q010B            -1.33339    0.26324  -5.065 4.08e-07 ***
+Q010C            -2.66590    0.39857  -6.689 2.26e-11 ***
+Q010D            -6.61686    0.73809  -8.965  &lt; 2e-16 ***
+Q010E            -8.73667    1.35998  -6.424 1.33e-10 ***
+Q011B            -4.63202    0.25449 -18.202  &lt; 2e-16 ***
+Q011C           -10.49830    0.66961 -15.678  &lt; 2e-16 ***
+Q011D           -11.25262    1.82395  -6.169 6.86e-10 ***
+Q011E           -18.13494    3.68403  -4.923 8.54e-07 ***
+Q012B             0.87709    1.14274   0.768 0.442762    
+Q012C            -4.02440    1.22024  -3.298 0.000974 ***
+Q012D           -11.51301    1.86681  -6.167 6.96e-10 ***
+Q012E            -6.42372    3.61277  -1.778 0.075395 .  
+Q013B             7.76402    0.22381  34.690  &lt; 2e-16 ***
+Q013C            12.37069    0.56020  22.083  &lt; 2e-16 ***
+Q013D            12.62373    1.42345   8.868  &lt; 2e-16 ***
+Q013E            15.24382    3.00383   5.075 3.88e-07 ***
+Q014B            -0.66706    0.29765  -2.241 0.025020 *  
+Q014C            -8.20144    0.79221 -10.353  &lt; 2e-16 ***
+Q014D            -3.41051    3.80018  -0.897 0.369474    
+Q014E            -8.10197    7.00779  -1.156 0.247626    
+Q015B            -3.13654    0.25682 -12.213  &lt; 2e-16 ***
+Q015C            -2.25408    1.77085  -1.273 0.203061    
+Q015D            -4.61976    6.53335  -0.707 0.479503    
+Q015E            19.72681    7.70543   2.560 0.010464 *  
+Q016B            -1.90643    0.26126  -7.297 2.95e-13 ***
+Q016C            -4.94240    1.08906  -4.538 5.67e-06 ***
+Q016D            -6.84099    4.68822  -1.459 0.144514    
+Q016E            -7.26460    8.34218  -0.871 0.383849    
+Q017B             2.16612    0.47864   4.526 6.03e-06 ***
+Q017C             5.44437    3.37893   1.611 0.107122    
+Q017D            -3.16286    7.70300  -0.411 0.681365    
+Q017E            18.27258    8.15476   2.241 0.025045 *  
+Q018B             2.62066    0.24351  10.762  &lt; 2e-16 ***
+Q019B             1.32985    0.85177   1.561 0.118459    
+Q019C             2.61006    0.87435   2.985 0.002835 ** 
+Q019D            -1.04955    0.91002  -1.153 0.248779    
+Q019E            -5.01802    0.97207  -5.162 2.44e-07 ***
+Q020B            -2.50540    0.22576 -11.098  &lt; 2e-16 ***
+Q021B            -2.87249    0.24150 -11.894  &lt; 2e-16 ***
+Q022B             0.92613    0.87393   1.060 0.289269    
+Q022C             6.41080    0.85692   7.481 7.38e-14 ***
+Q022D             6.33992    0.85793   7.390 1.47e-13 ***
+Q022E             5.69684    0.87023   6.546 5.90e-11 ***
+Q023B             1.27778    0.23885   5.350 8.81e-08 ***
+Q024B             7.83046    0.34938  22.413  &lt; 2e-16 ***
+Q024C            17.82493    0.44675  39.899  &lt; 2e-16 ***
+Q024D            24.34215    0.58112  41.888  &lt; 2e-16 ***
+Q024E            30.24445    0.74995  40.329  &lt; 2e-16 ***
+Q025B             2.40652    0.34660   6.943 3.84e-12 ***
+Q026B            -1.23290    0.30413  -4.054 5.04e-05 ***
+Q026C            -6.15422    0.28596 -21.522  &lt; 2e-16 ***
+Q042B             8.57202    0.39599  21.647  &lt; 2e-16 ***
+Q042C            22.07290    0.39828  55.420  &lt; 2e-16 ***
+Q042D            12.97154    0.46816  27.708  &lt; 2e-16 ***
+Q042E            30.78079    9.15415   3.362 0.000773 ***
+Q042F            44.78348   12.06093   3.713 0.000205 ***
+Q042G           -19.74199   11.29748  -1.747 0.080557 .  
+Q042H            12.00043   10.41679   1.152 0.249311    
+Q043B            -5.82662    0.82273  -7.082 1.42e-12 ***
+Q043C           -17.21561    1.49783 -11.494  &lt; 2e-16 ***
+Q043D           -28.20940    1.31778 -21.407  &lt; 2e-16 ***
+Q044B            -3.92898    0.47077  -8.346  &lt; 2e-16 ***
+Q044C            -9.95029    1.14593  -8.683  &lt; 2e-16 ***
+Q045B           -25.87254    0.34600 -74.776  &lt; 2e-16 ***
+Q045C            -6.87358    1.02548  -6.703 2.05e-11 ***
+Q045D            -8.86365    1.02721  -8.629  &lt; 2e-16 ***
+Q046B            10.47546    1.12003   9.353  &lt; 2e-16 ***
+Q046C            -0.84647    1.67981  -0.504 0.614324    
+Q046D            -0.67627    4.25345  -0.159 0.873675    
+Q047B            -2.11060    0.57027  -3.701 0.000215 ***
+Q047C             9.49528    0.93919  10.110  &lt; 2e-16 ***
+Q047D            18.69965    0.39327  47.549  &lt; 2e-16 ***
+Q047E            28.28739    0.55001  51.431  &lt; 2e-16 ***
+Q048B            -4.51882    0.63141  -7.157 8.28e-13 ***
+Q048C            -5.66661    0.88011  -6.439 1.21e-10 ***
+Q048D            15.07692    0.87604  17.210  &lt; 2e-16 ***
+Q049B            -6.99486    0.31746 -22.034  &lt; 2e-16 ***
+Q049C           -12.66695    0.43133 -29.367  &lt; 2e-16 ***
+Q050B           -13.86915    0.37550 -36.935  &lt; 2e-16 ***
+Q050C             4.30718    0.82003   5.252 1.50e-07 ***
+Q050D             3.50840    0.83524   4.200 2.66e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 56.32 on 336365 degrees of freedom
+Multiple R-squared:  0.4273,	Adjusted R-squared:  0.4271 
+F-statistic:  1845 on 136 and 336365 DF,  p-value: &lt; 2.2e-16
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Calculo do &lt;span class="o"&gt;$&lt;/span&gt;R&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt; no conjunto de teste &lt;span class="p"&gt;(&lt;/span&gt;out&lt;span class="o"&gt;-&lt;/span&gt;of&lt;span class="o"&gt;-&lt;/span&gt;sample &lt;span class="o"&gt;$&lt;/span&gt;R&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [24]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SSE&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;reg_pred &lt;span class="o"&gt;-&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+SST&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+r2&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;SSE&lt;span class="o"&gt;/&lt;/span&gt;SST
+r2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_html rendered_html output_subarea "&gt;
+0.424231880065406
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Para alguem que trabalho no campo das ciencias físicas, 0.42 me parece um $R^2$ muito baixo. No ultimo artigo científico 
+que publiquei calculei um $R^2$ que, as vezes estavam abaixo de 0.9, o que já me parecia baixo, mas, considerando as imprecisões possíves
+cometidas na obtenção dos dados, significativo.
+Além disso, estudando um pouco e falando com um amigo geografo, descobri que em certas areas do conhecimento (especialmente nas ciencias sociais), é quase impossivel obter
+$R^2$ desse tipo. Eis uma citação que achei no livro "Introduction to statistical learning"[1]:&lt;/p&gt;
+&lt;p&gt;"(...) em certos problemas na física (...) poderiamos esperar obter um $R^2$ próximo à 1 (...) Por outro lado, em aplicações tipicas da biologia, psicologia, marketing
+e outros campos, o modelo linear é uma aproximação extremamente grosseira dos dados e erros residuais devidos a outros fatores não medidos
+podem ser muito grandes (...) Neste contexto, um $R^2$ bem menor do que 0.1 seria mais realista!"&lt;/p&gt;
+&lt;p&gt;Além disso, inicialmente eu havia obtido $R^2$ (out-of-sample) negativos! Isso era devido à amostra ser muito pequena, pois o $R^2$ subiu
+muito quando passei a usar dados do estado de São Paulo e, em seguida, do Brasil inteiro.&lt;/p&gt;
+&lt;p&gt;Dadas as circunstâncias, 0.42 não me parece mal.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Selecionando as variaveis mais importantes de forma sistemática, com o metodo "backward selection" usando o critério BIC (Baeysian Information Criterion):&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [17]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;step&lt;span class="p"&gt;(&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;f&lt;span class="p"&gt;,&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt;direction&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"backward"&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt;k&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;Start:  AIC=2702351
+NOTA ~ NU_IDADE + TP_SEXO + TP_ESTADO_CIVIL + Q001 + Q002 + Q003 + 
+    Q004 + Q005 + Q006 + Q007 + Q008 + Q009 + Q010 + Q011 + Q012 + 
+    Q013 + Q014 + Q015 + Q016 + Q017 + Q018 + Q019 + Q020 + Q021 + 
+    Q022 + Q023 + Q024 + Q025 + Q026 + Q042 + Q043 + Q044 + Q045 + 
+    Q046 + Q047 + Q048 + Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+- Q017             4     68232 1056742940 2702320
+- TP_ESTADO_CIVIL  1         5 1056674713 2702338
+- NU_IDADE         1        13 1056674721 2702338
+- Q009             4    142956 1056817664 2702344
+&lt;none&gt;                         1056674708 2702351
+- Q016             4    192533 1056867241 2702360
+- Q023             1     87577 1056762285 2702366
+- Q004             5    308984 1056983692 2702383
+- Q025             1    160647 1056835355 2702389
+- Q010             4    327695 1057002403 2702402
+- Q014             4    410908 1057085617 2702429
+- Q015             4    435979 1057110687 2702437
+- Q007             3    430663 1057105371 2702448
+- Q020             1    370000 1057044709 2702456
+- Q018             1    390323 1057065031 2702462
+- Q046             3    479840 1057154548 2702464
+- Q021             1    449585 1057124293 2702481
+- Q044             2    496780 1057171488 2702483
+- Q012             4    624275 1057298983 2702496
+- Q008             4    948464 1057623172 2702599
+- Q019             4    993478 1057668186 2702614
+- Q022             4   1010787 1057685495 2702619
+- Q048             3   1018649 1057693357 2702635
+- Q026             2   1563206 1058237914 2702821
+- Q043             3   1733563 1058408271 2702861
+- Q003             5   1945685 1058620393 2702902
+- Q011             4   1944557 1058619265 2702915
+- Q002             7   2453110 1059127818 2703036
+- Q005             1   2548241 1059222949 2703146
+- Q001             7   3239454 1059914163 2703285
+- Q049             2   3232633 1059907341 2703349
+- Q013             4   4203302 1060878010 2703629
+- Q050             3   4817967 1061492675 2703837
+- Q042             7   9047953 1065722661 2705117
+- Q024             4   8951339 1065626047 2705126
+- Q047             4  12463852 1069138560 2706230
+- Q006            16  17219646 1073894354 2707559
+- TP_SEXO          1  16858425 1073533133 2707644
+- Q045             3  17465190 1074139898 2707807
+
+Step:  AIC=2702320
+NOTA ~ NU_IDADE + TP_SEXO + TP_ESTADO_CIVIL + Q001 + Q002 + Q003 + 
+    Q004 + Q005 + Q006 + Q007 + Q008 + Q009 + Q010 + Q011 + Q012 + 
+    Q013 + Q014 + Q015 + Q016 + Q018 + Q019 + Q020 + Q021 + Q022 + 
+    Q023 + Q024 + Q025 + Q026 + Q042 + Q043 + Q044 + Q045 + Q046 + 
+    Q047 + Q048 + Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+- TP_ESTADO_CIVIL  1         7 1056742947 2702307
+- NU_IDADE         1        18 1056742958 2702307
+- Q009             4    143316 1056886255 2702313
+&lt;none&gt;                         1056742940 2702320
+- Q016             4    188442 1056931382 2702327
+- Q023             1     89041 1056831981 2702335
+- Q004             5    313306 1057056246 2702353
+- Q025             1    159531 1056902470 2702358
+- Q010             4    320341 1057063281 2702369
+- Q014             4    406817 1057149756 2702396
+- Q015             4    412137 1057155076 2702398
+- Q007             3    439634 1057182573 2702420
+- Q020             1    367960 1057110899 2702424
+- Q046             3    475924 1057218864 2702431
+- Q018             1    409330 1057152270 2702437
+- Q021             1    443997 1057186937 2702448
+- Q044             2    494586 1057237526 2702451
+- Q012             4    615381 1057358321 2702462
+- Q008             4    980491 1057723430 2702578
+- Q019             4    990237 1057733176 2702581
+- Q022             4   1004357 1057747297 2702586
+- Q048             3   1016959 1057759899 2702603
+- Q026             2   1566979 1058309919 2702790
+- Q043             3   1731277 1058474216 2702829
+- Q003             5   1943784 1058686724 2702870
+- Q011             4   1940817 1058683757 2702882
+- Q002             7   2462398 1059205337 2703008
+- Q005             1   2545318 1059288257 2703113
+- Q001             7   3258525 1060001464 2703260
+- Q049             2   3237472 1059980412 2703319
+- Q013             4   4211882 1060954822 2703601
+- Q050             3   4813760 1061556700 2703804
+- Q042             7   9078040 1065820980 2705095
+- Q024             4   9005344 1065748283 2705112
+- Q047             4  12465682 1069208622 2706199
+- Q006            16  17311888 1074054828 2707556
+- TP_SEXO          1  16860805 1073603745 2707613
+- Q045             3  17454514 1074197454 2707772
+
+Step:  AIC=2702307
+NOTA ~ NU_IDADE + TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + 
+    Q006 + Q007 + Q008 + Q009 + Q010 + Q011 + Q012 + Q013 + Q014 + 
+    Q015 + Q016 + Q018 + Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + 
+    Q025 + Q026 + Q042 + Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + 
+    Q049 + Q050
+
+           Df Sum of Sq        RSS     AIC
+- NU_IDADE  1        12 1056742958 2702294
+- Q009      4    143327 1056886274 2702299
+&lt;none&gt;                  1056742947 2702307
+- Q016      4    188442 1056931389 2702314
+- Q023      1     89035 1056831982 2702322
+- Q004      5    313308 1057056254 2702340
+- Q025      1    159527 1056902474 2702344
+- Q010      4    320338 1057063285 2702356
+- Q014      4    406816 1057149763 2702383
+- Q015      4    412130 1057155076 2702385
+- Q007      3    439629 1057182576 2702407
+- Q020      1    367966 1057110912 2702410
+- Q046      3    475940 1057218887 2702418
+- Q018      1    409331 1057152277 2702424
+- Q021      1    443999 1057186946 2702435
+- Q044      2    494583 1057237529 2702437
+- Q012      4    615385 1057358331 2702449
+- Q008      4    980538 1057723484 2702565
+- Q019      4    990231 1057733178 2702568
+- Q022      4   1004369 1057747315 2702572
+- Q048      3   1016952 1057759899 2702590
+- Q026      2   1566978 1058309925 2702777
+- Q043      3   1731273 1058474219 2702816
+- Q003      5   1943788 1058686735 2702857
+- Q011      4   1940878 1058683825 2702869
+- Q002      7   2462404 1059205350 2702995
+- Q005      1   2546501 1059289448 2703101
+- Q001      7   3258518 1060001465 2703246
+- Q049      2   3237466 1059980412 2703306
+- Q013      4   4211890 1060954837 2703587
+- Q050      3   4822184 1061565130 2703793
+- Q042      7   9078235 1065821181 2705082
+- Q024      4   9005499 1065748446 2705099
+- Q047      4  12465957 1069208904 2706185
+- Q006     16  17312354 1074055301 2707543
+- TP_SEXO   1  16891625 1073634572 2707610
+- Q045      3  17491503 1074234450 2707771
+
+Step:  AIC=2702294
+NOTA ~ TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + Q006 + Q007 + 
+    Q008 + Q009 + Q010 + Q011 + Q012 + Q013 + Q014 + Q015 + Q016 + 
+    Q018 + Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + Q025 + Q026 + 
+    Q042 + Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + Q049 + Q050
+
+          Df Sum of Sq        RSS     AIC
+- Q009     4    143327 1056886285 2702286
+&lt;none&gt;                 1056742958 2702294
+- Q016     4    188436 1056931394 2702301
+- Q023     1     89050 1056832008 2702309
+- Q004     5    313328 1057056286 2702327
+- Q025     1    159518 1056902477 2702331
+- Q010     4    320331 1057063290 2702342
+- Q014     4    406805 1057149764 2702370
+- Q015     4    412292 1057155250 2702372
+- Q007     3    439629 1057182588 2702393
+- Q020     1    367969 1057110927 2702397
+- Q046     3    475974 1057218933 2702405
+- Q018     1    409333 1057152291 2702410
+- Q021     1    444042 1057187000 2702421
+- Q044     2    505010 1057247969 2702427
+- Q012     4    615378 1057358336 2702436
+- Q008     4    980615 1057723574 2702552
+- Q019     4    990222 1057733180 2702555
+- Q022     4   1004892 1057747851 2702559
+- Q048     3   1035099 1057778058 2702582
+- Q026     2   1569954 1058312913 2702765
+- Q043     3   1731265 1058474224 2702803
+- Q003     5   1943823 1058686781 2702844
+- Q011     4   1941339 1058684298 2702856
+- Q002     7   2467112 1059210071 2702983
+- Q005     1   2549290 1059292248 2703088
+- Q001     7   3259639 1060002597 2703234
+- Q049     2   3246866 1059989824 2703296
+- Q013     4   4216305 1060959264 2703576
+- Q050     3   4822385 1061565343 2703780
+- Q042     7   9078847 1065821806 2705069
+- Q024     4   9006733 1065749692 2705086
+- Q047     4  12466232 1069209191 2706172
+- Q006    16  17318363 1074061321 2707531
+- TP_SEXO  1  16895285 1073638244 2707598
+- Q045     3  17573299 1074316257 2707783
+
+Step:  AIC=2702286
+NOTA ~ TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + Q006 + Q007 + 
+    Q008 + Q010 + Q011 + Q012 + Q013 + Q014 + Q015 + Q016 + Q018 + 
+    Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + Q025 + Q026 + Q042 + 
+    Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + Q049 + Q050
+
+          Df Sum of Sq        RSS     AIC
+&lt;none&gt;                 1056886285 2702286
+- Q016     4    188742 1057075027 2702293
+- Q023     1     88286 1056974571 2702301
+- Q004     5    312963 1057199248 2702319
+- Q025     1    158574 1057044859 2702323
+- Q010     4    324503 1057210788 2702336
+- Q014     4    404960 1057291246 2702362
+- Q015     4    408097 1057294382 2702363
+- Q007     3    445217 1057331502 2702388
+- Q020     1    371947 1057258233 2702391
+- Q046     3    471004 1057357289 2702396
+- Q018     1    407697 1057293982 2702402
+- Q021     1    444531 1057330816 2702414
+- Q044     2    504474 1057390759 2702420
+- Q012     4    609304 1057495589 2702427
+- Q022     4    981292 1057867578 2702544
+- Q019     4    983867 1057870153 2702545
+- Q048     3   1033417 1057919702 2702574
+- Q008     4   1138025 1058024310 2702594
+- Q026     2   1560354 1058446639 2702754
+- Q043     3   1729463 1058615748 2702795
+- Q003     5   1937756 1058824041 2702834
+- Q011     4   1953538 1058839823 2702852
+- Q002     7   2461796 1059348081 2702974
+- Q005     1   2658497 1059544782 2703115
+- Q001     7   3258189 1060144474 2703225
+- Q049     2   3245494 1060131779 2703288
+- Q013     4   4237647 1061123932 2703575
+- Q050     3   4826270 1061712556 2703774
+- Q042     7   9062028 1065948313 2705056
+- Q024     4   9020555 1065906841 2705082
+- Q047     4  12471748 1069358034 2706166
+- Q006    16  17336162 1074222447 2707529
+- TP_SEXO  1  16897273 1073783558 2707590
+- Q045     3  17594133 1074480418 2707781
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+Call:
+lm(formula = NOTA ~ TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + 
+    Q006 + Q007 + Q008 + Q010 + Q011 + Q012 + Q013 + Q014 + Q015 + 
+    Q016 + Q018 + Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + Q025 + 
+    Q026 + Q042 + Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + Q049 + 
+    Q050, data = train)
+
+Coefficients:
+(Intercept)     TP_SEXOM        Q001B        Q001C        Q001D        Q001E  
+  461.67737     14.71002      2.66337      5.32229      4.29333      7.27192  
+      Q001F        Q001G        Q001H        Q002B        Q002C        Q002D  
+   15.47761     16.92103      7.27989      2.29309      3.93446      2.21329  
+      Q002E        Q002F        Q002G        Q002H        Q003B        Q003C  
+    5.29196     12.06166     11.27877     -2.46254      0.85269      2.83059  
+      Q003D        Q003E        Q003F        Q004B        Q004C        Q004D  
+    7.62384      6.88325     -0.87900     -0.05536      0.94986     -0.03897  
+      Q004E        Q004F         Q005        Q006B        Q006C        Q006D  
+    3.86397     -1.27747     -2.45642     -1.31211      5.28741     11.33211  
+      Q006E        Q006F        Q006G        Q006H        Q006I        Q006J  
+   13.66468     14.44286     19.16943     22.57307     23.74533     24.73339  
+      Q006K        Q006L        Q006M        Q006N        Q006O        Q006P  
+   27.93850     31.02534     34.33566     35.58429     39.75824     45.81115  
+      Q006Q        Q007B        Q007C        Q007D        Q008B        Q008C  
+   55.04839      1.91244      6.30464      5.70376      0.56712      2.75754  
+      Q008D        Q008E        Q010B        Q010C        Q010D        Q010E  
+    6.43667     11.21175     -1.27328     -2.47104     -6.30923     -8.37033  
+      Q011B        Q011C        Q011D        Q011E        Q012B        Q012C  
+   -4.74258    -11.01571    -12.09846    -18.35247      0.60484     -4.93796  
+      Q012D        Q012E        Q013B        Q013C        Q013D        Q013E  
+  -10.82708     -9.83853      7.57140     12.52613     14.22645     11.89578  
+      Q014B        Q014C        Q014D        Q014E        Q015B        Q015C  
+   -0.79039     -8.66928    -10.16119     -2.21548     -2.76563     -4.03720  
+      Q015D        Q015E        Q016B        Q016C        Q016D        Q016E  
+    6.75293     21.43241     -1.95755     -3.58812     -6.79373     -3.97231  
+      Q018B        Q019B        Q019C        Q019D        Q019E        Q020B  
+    2.76205      0.26933      1.28174     -2.69149     -6.25160     -2.45091  
+      Q021B        Q022B        Q022C        Q022D        Q022E        Q023B  
+   -2.86154      0.41026      5.89908      5.98996      5.41434      1.25976  
+      Q024B        Q024C        Q024D        Q024E        Q025B        Q026B  
+    8.17756     17.96936     24.51583     30.47804      2.45065     -1.43073  
+      Q026C        Q042B        Q042C        Q042D        Q042E        Q042F  
+   -6.30705      8.22645     21.20679     12.59386     11.05294     32.86551  
+      Q042G        Q042H        Q043B        Q043C        Q043D        Q044B  
+  -10.29877     -7.77559     -6.47885    -15.90652    -27.38664     -4.33009  
+      Q044C        Q045B        Q045C        Q045D        Q046B        Q046C  
+  -10.95485    -25.72676     -7.22876     -8.56690      9.86295     -0.07171  
+      Q046D        Q047B        Q047C        Q047D        Q047E        Q048B  
+   -3.69449     -1.14432      9.44100     19.22154     27.75480     -3.93691  
+      Q048C        Q048D        Q049B        Q049C        Q050B        Q050C  
+   -5.68869     13.56961     -7.06921    -12.16569    -13.95360      4.93305  
+      Q050D  
+    2.36414  
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [18]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;reg2&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;formula &lt;span class="o"&gt;=&lt;/span&gt; NOTA &lt;span class="o"&gt;~&lt;/span&gt; TP_SEXO &lt;span class="o"&gt;+&lt;/span&gt; Q001 &lt;span class="o"&gt;+&lt;/span&gt; Q002 &lt;span class="o"&gt;+&lt;/span&gt; Q003 &lt;span class="o"&gt;+&lt;/span&gt; Q004 &lt;span class="o"&gt;+&lt;/span&gt; Q005 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q006 &lt;span class="o"&gt;+&lt;/span&gt; Q007 &lt;span class="o"&gt;+&lt;/span&gt; Q008 &lt;span class="o"&gt;+&lt;/span&gt; Q010 &lt;span class="o"&gt;+&lt;/span&gt; Q011 &lt;span class="o"&gt;+&lt;/span&gt; Q012 &lt;span class="o"&gt;+&lt;/span&gt; Q013 &lt;span class="o"&gt;+&lt;/span&gt; Q014 &lt;span class="o"&gt;+&lt;/span&gt; Q015 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q016 &lt;span class="o"&gt;+&lt;/span&gt; Q018 &lt;span class="o"&gt;+&lt;/span&gt; Q019 &lt;span class="o"&gt;+&lt;/span&gt; Q020 &lt;span class="o"&gt;+&lt;/span&gt; Q021 &lt;span class="o"&gt;+&lt;/span&gt; Q022 &lt;span class="o"&gt;+&lt;/span&gt; Q023 &lt;span class="o"&gt;+&lt;/span&gt; Q024 &lt;span class="o"&gt;+&lt;/span&gt; Q025 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q026 &lt;span class="o"&gt;+&lt;/span&gt; Q042 &lt;span class="o"&gt;+&lt;/span&gt; Q043 &lt;span class="o"&gt;+&lt;/span&gt; Q044 &lt;span class="o"&gt;+&lt;/span&gt; Q045 &lt;span class="o"&gt;+&lt;/span&gt; Q046 &lt;span class="o"&gt;+&lt;/span&gt; Q047 &lt;span class="o"&gt;+&lt;/span&gt; Q048 &lt;span class="o"&gt;+&lt;/span&gt; Q049 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q050&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [19]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;reg_pred2 &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;reg2&lt;span class="p"&gt;,&lt;/span&gt; newdata&lt;span class="o"&gt;=&lt;/span&gt;test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [21]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SSE&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;reg_pred2 &lt;span class="o"&gt;-&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+SST&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+r2&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;SSE&lt;span class="o"&gt;/&lt;/span&gt;SST
+r2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_html rendered_html output_subarea "&gt;
+0.424154614321558
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Selecionando as variaveis mais importantes de forma sistemática, com o metodo "mixed selection" usando o critérion BIC&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [11]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;step&lt;span class="p"&gt;(&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;f&lt;span class="p"&gt;,&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt;direction&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"both"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;k&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;enem_br&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;Start:  AIC=2702351
+NOTA ~ NU_IDADE + TP_SEXO + TP_ESTADO_CIVIL + Q001 + Q002 + Q003 + 
+    Q004 + Q005 + Q006 + Q007 + Q008 + Q009 + Q010 + Q011 + Q012 + 
+    Q013 + Q014 + Q015 + Q016 + Q017 + Q018 + Q019 + Q020 + Q021 + 
+    Q022 + Q023 + Q024 + Q025 + Q026 + Q042 + Q043 + Q044 + Q045 + 
+    Q046 + Q047 + Q048 + Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+- Q017             4     68232 1056742940 2702320
+- TP_ESTADO_CIVIL  1         5 1056674713 2702338
+- NU_IDADE         1        13 1056674721 2702338
+- Q009             4    142956 1056817664 2702344
+&lt;none&gt;                         1056674708 2702351
+- Q016             4    192533 1056867241 2702360
+- Q023             1     87577 1056762285 2702366
+- Q004             5    308984 1056983692 2702383
+- Q025             1    160647 1056835355 2702389
+- Q010             4    327695 1057002403 2702402
+- Q014             4    410908 1057085617 2702429
+- Q015             4    435979 1057110687 2702437
+- Q007             3    430663 1057105371 2702448
+- Q020             1    370000 1057044709 2702456
+- Q018             1    390323 1057065031 2702462
+- Q046             3    479840 1057154548 2702464
+- Q021             1    449585 1057124293 2702481
+- Q044             2    496780 1057171488 2702483
+- Q012             4    624275 1057298983 2702496
+- Q008             4    948464 1057623172 2702599
+- Q019             4    993478 1057668186 2702614
+- Q022             4   1010787 1057685495 2702619
+- Q048             3   1018649 1057693357 2702635
+- Q026             2   1563206 1058237914 2702821
+- Q043             3   1733563 1058408271 2702861
+- Q003             5   1945685 1058620393 2702902
+- Q011             4   1944557 1058619265 2702915
+- Q002             7   2453110 1059127818 2703036
+- Q005             1   2548241 1059222949 2703146
+- Q001             7   3239454 1059914163 2703285
+- Q049             2   3232633 1059907341 2703349
+- Q013             4   4203302 1060878010 2703629
+- Q050             3   4817967 1061492675 2703837
+- Q042             7   9047953 1065722661 2705117
+- Q024             4   8951339 1065626047 2705126
+- Q047             4  12463852 1069138560 2706230
+- Q006            16  17219646 1073894354 2707559
+- TP_SEXO          1  16858425 1073533133 2707644
+- Q045             3  17465190 1074139898 2707807
+
+Step:  AIC=2702320
+NOTA ~ NU_IDADE + TP_SEXO + TP_ESTADO_CIVIL + Q001 + Q002 + Q003 + 
+    Q004 + Q005 + Q006 + Q007 + Q008 + Q009 + Q010 + Q011 + Q012 + 
+    Q013 + Q014 + Q015 + Q016 + Q018 + Q019 + Q020 + Q021 + Q022 + 
+    Q023 + Q024 + Q025 + Q026 + Q042 + Q043 + Q044 + Q045 + Q046 + 
+    Q047 + Q048 + Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+- TP_ESTADO_CIVIL  1         7 1056742947 2702307
+- NU_IDADE         1        18 1056742958 2702307
+- Q009             4    143316 1056886255 2702313
+&lt;none&gt;                         1056742940 2702320
+- Q016             4    188442 1056931382 2702327
+- Q023             1     89041 1056831981 2702335
++ Q017             4     68232 1056674708 2702351
+- Q004             5    313306 1057056246 2702353
+- Q025             1    159531 1056902470 2702358
+- Q010             4    320341 1057063281 2702369
+- Q014             4    406817 1057149756 2702396
+- Q015             4    412137 1057155076 2702398
+- Q007             3    439634 1057182573 2702420
+- Q020             1    367960 1057110899 2702424
+- Q046             3    475924 1057218864 2702431
+- Q018             1    409330 1057152270 2702437
+- Q021             1    443997 1057186937 2702448
+- Q044             2    494586 1057237526 2702451
+- Q012             4    615381 1057358321 2702462
+- Q008             4    980491 1057723430 2702578
+- Q019             4    990237 1057733176 2702581
+- Q022             4   1004357 1057747297 2702586
+- Q048             3   1016959 1057759899 2702603
+- Q026             2   1566979 1058309919 2702790
+- Q043             3   1731277 1058474216 2702829
+- Q003             5   1943784 1058686724 2702870
+- Q011             4   1940817 1058683757 2702882
+- Q002             7   2462398 1059205337 2703008
+- Q005             1   2545318 1059288257 2703113
+- Q001             7   3258525 1060001464 2703260
+- Q049             2   3237472 1059980412 2703319
+- Q013             4   4211882 1060954822 2703601
+- Q050             3   4813760 1061556700 2703804
+- Q042             7   9078040 1065820980 2705095
+- Q024             4   9005344 1065748283 2705112
+- Q047             4  12465682 1069208622 2706199
+- Q006            16  17311888 1074054828 2707556
+- TP_SEXO          1  16860805 1073603745 2707613
+- Q045             3  17454514 1074197454 2707772
+
+Step:  AIC=2702307
+NOTA ~ NU_IDADE + TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + 
+    Q006 + Q007 + Q008 + Q009 + Q010 + Q011 + Q012 + Q013 + Q014 + 
+    Q015 + Q016 + Q018 + Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + 
+    Q025 + Q026 + Q042 + Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + 
+    Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+- NU_IDADE         1        12 1056742958 2702294
+- Q009             4    143327 1056886274 2702299
+&lt;none&gt;                         1056742947 2702307
+- Q016             4    188442 1056931389 2702314
++ TP_ESTADO_CIVIL  1         7 1056742940 2702320
+- Q023             1     89035 1056831982 2702322
++ Q017             4     68233 1056674713 2702338
+- Q004             5    313308 1057056254 2702340
+- Q025             1    159527 1056902474 2702344
+- Q010             4    320338 1057063285 2702356
+- Q014             4    406816 1057149763 2702383
+- Q015             4    412130 1057155076 2702385
+- Q007             3    439629 1057182576 2702407
+- Q020             1    367966 1057110912 2702410
+- Q046             3    475940 1057218887 2702418
+- Q018             1    409331 1057152277 2702424
+- Q021             1    443999 1057186946 2702435
+- Q044             2    494583 1057237529 2702437
+- Q012             4    615385 1057358331 2702449
+- Q008             4    980538 1057723484 2702565
+- Q019             4    990231 1057733178 2702568
+- Q022             4   1004369 1057747315 2702572
+- Q048             3   1016952 1057759899 2702590
+- Q026             2   1566978 1058309925 2702777
+- Q043             3   1731273 1058474219 2702816
+- Q003             5   1943788 1058686735 2702857
+- Q011             4   1940878 1058683825 2702869
+- Q002             7   2462404 1059205350 2702995
+- Q005             1   2546501 1059289448 2703101
+- Q001             7   3258518 1060001465 2703246
+- Q049             2   3237466 1059980412 2703306
+- Q013             4   4211890 1060954837 2703587
+- Q050             3   4822184 1061565130 2703793
+- Q042             7   9078235 1065821181 2705082
+- Q024             4   9005499 1065748446 2705099
+- Q047             4  12465957 1069208904 2706185
+- Q006            16  17312354 1074055301 2707543
+- TP_SEXO          1  16891625 1073634572 2707610
+- Q045             3  17491503 1074234450 2707771
+
+Step:  AIC=2702294
+NOTA ~ TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + Q006 + Q007 + 
+    Q008 + Q009 + Q010 + Q011 + Q012 + Q013 + Q014 + Q015 + Q016 + 
+    Q018 + Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + Q025 + Q026 + 
+    Q042 + Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+- Q009             4    143327 1056886285 2702286
+&lt;none&gt;                         1056742958 2702294
+- Q016             4    188436 1056931394 2702301
++ NU_IDADE         1        12 1056742947 2702307
++ TP_ESTADO_CIVIL  1         1 1056742958 2702307
+- Q023             1     89050 1056832008 2702309
++ Q017             4     68237 1056674721 2702325
+- Q004             5    313328 1057056286 2702327
+- Q025             1    159518 1056902477 2702331
+- Q010             4    320331 1057063290 2702342
+- Q014             4    406805 1057149764 2702370
+- Q015             4    412292 1057155250 2702372
+- Q007             3    439629 1057182588 2702393
+- Q020             1    367969 1057110927 2702397
+- Q046             3    475974 1057218933 2702405
+- Q018             1    409333 1057152291 2702410
+- Q021             1    444042 1057187000 2702421
+- Q044             2    505010 1057247969 2702427
+- Q012             4    615378 1057358336 2702436
+- Q008             4    980615 1057723574 2702552
+- Q019             4    990222 1057733180 2702555
+- Q022             4   1004892 1057747851 2702559
+- Q048             3   1035099 1057778058 2702582
+- Q026             2   1569954 1058312913 2702765
+- Q043             3   1731265 1058474224 2702803
+- Q003             5   1943823 1058686781 2702844
+- Q011             4   1941339 1058684298 2702856
+- Q002             7   2467112 1059210071 2702983
+- Q005             1   2549290 1059292248 2703088
+- Q001             7   3259639 1060002597 2703234
+- Q049             2   3246866 1059989824 2703296
+- Q013             4   4216305 1060959264 2703576
+- Q050             3   4822385 1061565343 2703780
+- Q042             7   9078847 1065821806 2705069
+- Q024             4   9006733 1065749692 2705086
+- Q047             4  12466232 1069209191 2706172
+- Q006            16  17318363 1074061321 2707531
+- TP_SEXO          1  16895285 1073638244 2707598
+- Q045             3  17573299 1074316257 2707783
+
+Step:  AIC=2702286
+NOTA ~ TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + Q006 + Q007 + 
+    Q008 + Q010 + Q011 + Q012 + Q013 + Q014 + Q015 + Q016 + Q018 + 
+    Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + Q025 + Q026 + Q042 + 
+    Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + Q049 + Q050
+
+                  Df Sum of Sq        RSS     AIC
+&lt;none&gt;                         1056886285 2702286
+- Q016             4    188742 1057075027 2702293
++ Q009             4    143327 1056742958 2702294
++ NU_IDADE         1        11 1056886274 2702299
++ TP_ESTADO_CIVIL  1         6 1056886279 2702299
+- Q023             1     88286 1056974571 2702301
++ Q017             4     68598 1056817687 2702317
+- Q004             5    312963 1057199248 2702319
+- Q025             1    158574 1057044859 2702323
+- Q010             4    324503 1057210788 2702336
+- Q014             4    404960 1057291246 2702362
+- Q015             4    408097 1057294382 2702363
+- Q007             3    445217 1057331502 2702388
+- Q020             1    371947 1057258233 2702391
+- Q046             3    471004 1057357289 2702396
+- Q018             1    407697 1057293982 2702402
+- Q021             1    444531 1057330816 2702414
+- Q044             2    504474 1057390759 2702420
+- Q012             4    609304 1057495589 2702427
+- Q022             4    981292 1057867578 2702544
+- Q019             4    983867 1057870153 2702545
+- Q048             3   1033417 1057919702 2702574
+- Q008             4   1138025 1058024310 2702594
+- Q026             2   1560354 1058446639 2702754
+- Q043             3   1729463 1058615748 2702795
+- Q003             5   1937756 1058824041 2702834
+- Q011             4   1953538 1058839823 2702852
+- Q002             7   2461796 1059348081 2702974
+- Q005             1   2658497 1059544782 2703115
+- Q001             7   3258189 1060144474 2703225
+- Q049             2   3245494 1060131779 2703288
+- Q013             4   4237647 1061123932 2703575
+- Q050             3   4826270 1061712556 2703774
+- Q042             7   9062028 1065948313 2705056
+- Q024             4   9020555 1065906841 2705082
+- Q047             4  12471748 1069358034 2706166
+- Q006            16  17336162 1074222447 2707529
+- TP_SEXO          1  16897273 1073783558 2707590
+- Q045             3  17594133 1074480418 2707781
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_text output_subarea "&gt;
+&lt;pre&gt;
+Call:
+lm(formula = NOTA ~ TP_SEXO + Q001 + Q002 + Q003 + Q004 + Q005 + 
+    Q006 + Q007 + Q008 + Q010 + Q011 + Q012 + Q013 + Q014 + Q015 + 
+    Q016 + Q018 + Q019 + Q020 + Q021 + Q022 + Q023 + Q024 + Q025 + 
+    Q026 + Q042 + Q043 + Q044 + Q045 + Q046 + Q047 + Q048 + Q049 + 
+    Q050, data = train)
+
+Coefficients:
+(Intercept)     TP_SEXOM        Q001B        Q001C        Q001D        Q001E  
+  461.67737     14.71002      2.66337      5.32229      4.29333      7.27192  
+      Q001F        Q001G        Q001H        Q002B        Q002C        Q002D  
+   15.47761     16.92103      7.27989      2.29309      3.93446      2.21329  
+      Q002E        Q002F        Q002G        Q002H        Q003B        Q003C  
+    5.29196     12.06166     11.27877     -2.46254      0.85269      2.83059  
+      Q003D        Q003E        Q003F        Q004B        Q004C        Q004D  
+    7.62384      6.88325     -0.87900     -0.05536      0.94986     -0.03897  
+      Q004E        Q004F         Q005        Q006B        Q006C        Q006D  
+    3.86397     -1.27747     -2.45642     -1.31211      5.28741     11.33211  
+      Q006E        Q006F        Q006G        Q006H        Q006I        Q006J  
+   13.66468     14.44286     19.16943     22.57307     23.74533     24.73339  
+      Q006K        Q006L        Q006M        Q006N        Q006O        Q006P  
+   27.93850     31.02534     34.33566     35.58429     39.75824     45.81115  
+      Q006Q        Q007B        Q007C        Q007D        Q008B        Q008C  
+   55.04839      1.91244      6.30464      5.70376      0.56712      2.75754  
+      Q008D        Q008E        Q010B        Q010C        Q010D        Q010E  
+    6.43667     11.21175     -1.27328     -2.47104     -6.30923     -8.37033  
+      Q011B        Q011C        Q011D        Q011E        Q012B        Q012C  
+   -4.74258    -11.01571    -12.09846    -18.35247      0.60484     -4.93796  
+      Q012D        Q012E        Q013B        Q013C        Q013D        Q013E  
+  -10.82708     -9.83853      7.57140     12.52613     14.22645     11.89578  
+      Q014B        Q014C        Q014D        Q014E        Q015B        Q015C  
+   -0.79039     -8.66928    -10.16119     -2.21548     -2.76563     -4.03720  
+      Q015D        Q015E        Q016B        Q016C        Q016D        Q016E  
+    6.75293     21.43241     -1.95755     -3.58812     -6.79373     -3.97231  
+      Q018B        Q019B        Q019C        Q019D        Q019E        Q020B  
+    2.76205      0.26933      1.28174     -2.69149     -6.25160     -2.45091  
+      Q021B        Q022B        Q022C        Q022D        Q022E        Q023B  
+   -2.86154      0.41026      5.89908      5.98996      5.41434      1.25976  
+      Q024B        Q024C        Q024D        Q024E        Q025B        Q026B  
+    8.17756     17.96936     24.51583     30.47804      2.45065     -1.43073  
+      Q026C        Q042B        Q042C        Q042D        Q042E        Q042F  
+   -6.30705      8.22645     21.20679     12.59386     11.05294     32.86551  
+      Q042G        Q042H        Q043B        Q043C        Q043D        Q044B  
+  -10.29877     -7.77559     -6.47885    -15.90652    -27.38664     -4.33009  
+      Q044C        Q045B        Q045C        Q045D        Q046B        Q046C  
+  -10.95485    -25.72676     -7.22876     -8.56690      9.86295     -0.07171  
+      Q046D        Q047B        Q047C        Q047D        Q047E        Q048B  
+   -3.69449     -1.14432      9.44100     19.22154     27.75480     -3.93691  
+      Q048C        Q048D        Q049B        Q049C        Q050B        Q050C  
+   -5.68869     13.56961     -7.06921    -12.16569    -13.95360      4.93305  
+      Q050D  
+    2.36414  
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [12]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;reg3&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;formula &lt;span class="o"&gt;=&lt;/span&gt; NOTA &lt;span class="o"&gt;~&lt;/span&gt; TP_SEXO &lt;span class="o"&gt;+&lt;/span&gt; Q001 &lt;span class="o"&gt;+&lt;/span&gt; Q002 &lt;span class="o"&gt;+&lt;/span&gt; Q003 &lt;span class="o"&gt;+&lt;/span&gt; Q004 &lt;span class="o"&gt;+&lt;/span&gt; Q005 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q006 &lt;span class="o"&gt;+&lt;/span&gt; Q007 &lt;span class="o"&gt;+&lt;/span&gt; Q008 &lt;span class="o"&gt;+&lt;/span&gt; Q010 &lt;span class="o"&gt;+&lt;/span&gt; Q011 &lt;span class="o"&gt;+&lt;/span&gt; Q012 &lt;span class="o"&gt;+&lt;/span&gt; Q013 &lt;span class="o"&gt;+&lt;/span&gt; Q014 &lt;span class="o"&gt;+&lt;/span&gt; Q015 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q016 &lt;span class="o"&gt;+&lt;/span&gt; Q018 &lt;span class="o"&gt;+&lt;/span&gt; Q019 &lt;span class="o"&gt;+&lt;/span&gt; Q020 &lt;span class="o"&gt;+&lt;/span&gt; Q021 &lt;span class="o"&gt;+&lt;/span&gt; Q022 &lt;span class="o"&gt;+&lt;/span&gt; Q023 &lt;span class="o"&gt;+&lt;/span&gt; Q024 &lt;span class="o"&gt;+&lt;/span&gt; Q025 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q026 &lt;span class="o"&gt;+&lt;/span&gt; Q042 &lt;span class="o"&gt;+&lt;/span&gt; Q043 &lt;span class="o"&gt;+&lt;/span&gt; Q044 &lt;span class="o"&gt;+&lt;/span&gt; Q045 &lt;span class="o"&gt;+&lt;/span&gt; Q046 &lt;span class="o"&gt;+&lt;/span&gt; Q047 &lt;span class="o"&gt;+&lt;/span&gt; Q048 &lt;span class="o"&gt;+&lt;/span&gt; Q049 &lt;span class="o"&gt;+&lt;/span&gt; 
+    Q050&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;reg_pred3 &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;reg3&lt;span class="p"&gt;,&lt;/span&gt; newdata&lt;span class="o"&gt;=&lt;/span&gt;test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [16]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SSE&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;reg_pred3 &lt;span class="o"&gt;-&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+SST&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;NOTA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+r2&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;SSE&lt;span class="o"&gt;/&lt;/span&gt;SST
+r2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_html rendered_html output_subarea "&gt;
+0.424154614321558
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [25]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str&lt;span class="p"&gt;(&lt;/span&gt;reg&lt;span class="o"&gt;$&lt;/span&gt;coefficients&lt;span class="p"&gt;)&lt;/span&gt;
+str&lt;span class="p"&gt;(&lt;/span&gt;reg2&lt;span class="o"&gt;$&lt;/span&gt;coefficients&lt;span class="p"&gt;)&lt;/span&gt;
+str&lt;span class="p"&gt;(&lt;/span&gt;reg3&lt;span class="o"&gt;$&lt;/span&gt;coefficients&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt; Named num [1:137] 468.31662 -0.00284 14.70924 0.02683 2.73438 ...
+ - attr(*, "names")= chr [1:137] "(Intercept)" "NU_IDADE" "TP_SEXOM" "TP_ESTADO_CIVIL" ...
+ Named num [1:127] 461.68 14.71 2.66 5.32 4.29 ...
+ - attr(*, "names")= chr [1:127] "(Intercept)" "TP_SEXOM" "Q001B" "Q001C" ...
+ Named num [1:127] 461.68 14.71 2.66 5.32 4.29 ...
+ - attr(*, "names")= chr [1:127] "(Intercept)" "TP_SEXOM" "Q001B" "Q001C" ...
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-r"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;
+</content><category term="second"></category><category term="test"></category></entry><entry><title>First Post</title><link href="https://data-fiend.github.io/first-post.html" rel="alternate"></link><published>2017-08-23T23:48:00+02:00</published><updated>2017-08-23T23:48:00+02:00</updated><author><name>Felipe</name></author><id>tag:data-fiend.github.io,2017-08-23:/first-post.html</id><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *

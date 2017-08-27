@@ -1,0 +1,3299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Second Post | Felipe's Data Science Blog
+</title>
+  <link rel="canonical" href="/second-post.html">
+
+
+
+  <link rel="stylesheet" href="/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="/theme/css/style.css">
+
+
+<meta name="description" content="I am going to explore data resulting from Brazil's (I am Brazilian, even though I've lived most of my life abroad) "Exame Nacional do Ensino Médio (Enem)", a school-leaver's test. It is roughly equivalent to the American SATs, Swiss Matura, French Bac, etc... This notebook represents cleaned up version of the actual project, in order to get to this point, I had to run a lot of tests on the data. Nonetheless, by following what is here, one should be able to get from the raw data to my final results.">
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1 class="title"><a href="">Felipe's Data Science Blog</a></h1>
+          <ul class="list-inline">
+            <li class="list-inline-item"><a href="https://www.r-project.org/" target="_blank">R</a></li>
+            <li class="list-inline-item"><a href="https://www.continuum.io/downloads" target="_blank">Anaconda</a></li>
+            <li class="list-inline-item"><a href="https://github.com/data-fiend/data-fiend.github.io" target="_blank">GitHub depo for the blog</a></li>
+            <li class="list-inline-item"><a href="https://scholar.google.ch/citations?user=Pm3J8fkAAAAJ&hl=fr" target="_blank">my publications</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Second Post
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-08-27T23:23:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Son 27 August 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/category/posts.html">posts</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="/author/felipe.html">Felipe</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="/tag/r.html">#R</a>,         <a href="/tag/enem.html">#enem</a>,         <a href="/tag/linear-model.html">#linear model</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I am going to explore data resulting from Brazil's (I am Brazilian, even though I've lived most of my life abroad) "Exame Nacional do Ensino Médio (Enem)", a school-leaver's test. It is roughly equivalent to the American SATs, Swiss Matura, French Bac, etc...</p>
+<p>This notebook represents cleaned up version of the actual project, in order to get to this point, I had to run a lot of tests on the data. Nonetheless, by following what is here, one should be able to get from the raw data to my final results.</p>
+<p>I will be using R (which also works in jupyter) to do the analysis. I will mostly be playing around with linear regression models here. This is not supposed to be an analysis to end all analysis of this huge and, rather complex (in my humble opinion) dataset.</p>
+<p>I downloaded the data for 2015 from "Instituto Nacional de Estudos e Pesquisas Anísio Teixeira (INEP)":</p>
+<p><a href="http://portal.inep.gov.br/microdados">http://portal.inep.gov.br/microdados</a></p>
+<p>The file "microdados_enem2015" containts several subfolders, including an excel file that works as a dictionary for all the columns contained in the main .csv file:</p>
+<p>microdados_enem2015\microdados_enem_2015\DICIONÁRIO\Dicionário_Microdados_Enem_2015.xlsx</p>
+<p>The actual data is in:</p>
+<p>\microdados_enem2015\microdados_enem_2015\DADOS\MICRODADOS_ENEM_2015.csv</p>
+<p>This file contains 166 variables (columns) and 7746428 rows! The latter number corresponds to the total number of students who took the test in 2015 (the total population of Brazil is around 210 million). Among all the variables, we can find those that correspond to personal student data (age, place of birth, gender, etc) as well as variables regarding information on the test itself, namely grades for 5 different tests: science, language, humanities, maths and writing. These are going to be our dependent variables.</p>
+<p>Moreover, 50 out of the 166 variables are part of a socio-economic questionnaire every student had to take. These are going to make the bulk of our predictors.</p>
+<p>I started exploring the data by loading the first 500 rows of the file:</p>
+<p>read.csv(file="MICRODADOS_ENEM_2015.csv",nrows=500)</p>
+<p>The complete .csv file is 5 GB. I actually tried loading everything into R, but my computer froze. This is due to the fact that R loads everything into RAM memory, which is limited on my personal computer (it's over 5 years old). In order to get around this problem I used an R module called "sqldf", which allowed me to select only a subset of students, using an SQL "SELECT FROM" type command.</p>
+<p>I limited myself, at first, to students from the Brazilian state of Paraná (where I was born). I used this data to explore the data set and clean it, as well as to create some linear regression models. Unfortunately, after having cleaned the data, this subset was too small to give any meaningful results.</p>
+<p>Long story short, I ended up selecting students (from the whole of Brazil) without special needs and who are white (self-declared). Concerning the former choice, I noticed that there were over 50 variables describing students' special needs, making the dataset even more complex. Moreover, the special needs are very heterogeneous in their nature, which would have made the analysis much harder. As for the choice of race, I decided to pick the largest group (just under 50%) in order to reduce the number of data points by around half. Moreover, I suspect that race and social condition are highly correlated, and it might actually be wise to separate their analysis.</p>
+<p>I also eliminated questions Q027-Q033 that asked the student about their motivations for working (a payed job). I did this because I only want to work with complete data points (i.e. students for whom no information is missing), and including these questions would have meant eliminating all students who had never held a job (a big chunk of the dataset). I did keep the question "have you every worked a paying job?" (Q026).</p>
+<p>Finally, I also eliminated questions of the type "was SOME REASON an important factor in deciding to take this test", since they are inherently subjective and I wanted to restrict my analysis to strictly socio-economic factors.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Loading the dataset</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span>sqldf<span class="p">)</span>
+enem_br<span class="o">=</span>read.csv.sql<span class="p">(</span><span class="s">"MICRODADOS_ENEM_2015.csv"</span><span class="p">,</span>sql<span class="o">=</span><span class="s">"select * from file</span>
+<span class="s">                                                                where (CO_PROVA_MT =243 OR CO_PROVA_MT =244)</span>
+<span class="s">                                                                AND  TP_PRESENCA_MT=1</span>
+<span class="s">                                                                AND  TP_PRESENCA_CN=1</span>
+<span class="s">                                                                AND  TP_PRESENCA_CH=1</span>
+<span class="s">                                                                AND  TP_PRESENCA_LC=1</span>
+<span class="s">                                                                AND  IN_TREINEIRO =0</span>
+<span class="s">                                                                AND  TP_NACIONALIDADE =1</span>
+<span class="s">                                                                AND  IN_ESTUDA_CLASSE_HOSPITALAR =0</span>
+<span class="s">                                                                AND  IN_BAIXA_VISAO =0</span>
+<span class="s">                                                                AND  IN_CEGUEIRA =0</span>
+<span class="s">                                                                AND  IN_SURDEZ =0</span>
+<span class="s">                                                                AND  IN_DEFICIENCIA_AUDITIVA =0</span>
+<span class="s">                                                                AND  IN_SURDO_CEGUEIRA =0</span>
+<span class="s">                                                                AND  IN_DEFICIENCIA_FISICA =0</span>
+<span class="s">                                                                AND  IN_DEFICIENCIA_MENTAL =0</span>
+<span class="s">                                                                AND  IN_DEFICIT_ATENCAO =0</span>
+<span class="s">                                                                AND  IN_DISLEXIA =0</span>
+<span class="s">                                                                AND  IN_GESTANTE =0</span>
+<span class="s">                                                                AND  IN_LACTANTE =0</span>
+<span class="s">                                                                AND  IN_IDOSO =0</span>
+<span class="s">                                                                AND  IN_DISCALCULIA =0</span>
+<span class="s">                                                                AND  IN_AUTISMO =0</span>
+<span class="s">                                                                AND  IN_VISAO_MONOCULAR =0</span>
+<span class="s">                                                                AND  IN_SABATISTA =0</span>
+<span class="s">                                                                AND  IN_OUTRA_DEF =0</span>
+<span class="s">                                                                AND  TP_COR_RACA=1"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I saved the subset (much smaller than the initial one) I obtained with above command</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>write.csv<span class="p">(</span>enem_br<span class="p">,</span><span class="s">"enem_proc2.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">rm</span><span class="p">(</span>enem_br<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the first command, the "CO_PROVA_MT =243 OR CO_PROVA_MT =244" bit selects only students who took the "yellow" and "grey" math tests (the tests are color-coded and each color has different questions, presumably to avoid cheating).
+This was simply a method I used to create smaller datasets and avoid overloading my PC.</p>
+<p>The same command is repeated below, this time selecting students who took the "blue" and "pink" math tests:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">=</span>read.csv.sql<span class="p">(</span><span class="s">"MICRODADOS_ENEM_2015.csv"</span><span class="p">,</span>sql<span class="o">=</span><span class="s">"select * from file</span>
+<span class="s">                                                                where (CO_PROVA_MT =245 OR CO_PROVA_MT =246)</span>
+<span class="s">                                                                AND  TP_PRESENCA_MT=1</span>
+<span class="s">                                                                AND  TP_PRESENCA_CN=1</span>
+<span class="s">                                                                AND  TP_PRESENCA_CH=1</span>
+<span class="s">                                                                AND  TP_PRESENCA_LC=1</span>
+<span class="s">                                                                AND  IN_TREINEIRO =0</span>
+<span class="s">                                                                AND  TP_NACIONALIDADE =1</span>
+<span class="s">                                                                AND  IN_ESTUDA_CLASSE_HOSPITALAR =0</span>
+<span class="s">                                                                AND  IN_BAIXA_VISAO =0</span>
+<span class="s">                                                                AND  IN_CEGUEIRA =0</span>
+<span class="s">                                                                AND  IN_SURDEZ =0</span>
+<span class="s">                                                                AND  IN_DEFICIENCIA_AUDITIVA =0</span>
+<span class="s">                                                                AND  IN_SURDO_CEGUEIRA =0</span>
+<span class="s">                                                                AND  IN_DEFICIENCIA_FISICA =0</span>
+<span class="s">                                                                AND  IN_DEFICIENCIA_MENTAL =0</span>
+<span class="s">                                                                AND  IN_DEFICIT_ATENCAO =0</span>
+<span class="s">                                                                AND  IN_DISLEXIA =0</span>
+<span class="s">                                                                AND  IN_GESTANTE =0</span>
+<span class="s">                                                                AND  IN_LACTANTE =0</span>
+<span class="s">                                                                AND  IN_IDOSO =0</span>
+<span class="s">                                                                AND  IN_DISCALCULIA =0</span>
+<span class="s">                                                                AND  IN_AUTISMO =0</span>
+<span class="s">                                                                AND  IN_VISAO_MONOCULAR =0</span>
+<span class="s">                                                                AND  IN_SABATISTA =0</span>
+<span class="s">                                                                AND  IN_OUTRA_DEF =0</span>
+<span class="s">                                                                AND  TP_COR_RACA=1"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>write.csv<span class="p">(</span>enem_br<span class="p">,</span><span class="s">"enem_proc3.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With command below, I load the files I had previously saved and at the same time eliminate the columns I am not going to use. Loading the data this way also automatically transform categorical variables into the R variable type "factor".</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [44]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span>data.table<span class="p">)</span>
+enem1<span class="o">=</span>fread<span class="p">(</span><span class="s">"enem_proc2.csv"</span><span class="p">,</span>drop<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span><span class="m">7</span><span class="o">:</span><span class="m">17</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="o">:</span><span class="m">81</span><span class="p">,</span><span class="m">82</span><span class="o">:</span><span class="m">93</span><span class="p">,</span><span class="m">94</span><span class="o">:</span><span class="m">97</span><span class="p">,</span><span class="m">102</span><span class="o">:</span><span class="m">117</span><span class="p">,</span><span class="m">144</span><span class="o">:</span><span class="m">158</span><span class="p">),</span>data.table<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> na.strings<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">""</span><span class="p">,</span><span class="s">"NA"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Read 859664 rows and 53 (of 167) columns from 0.752 GB file in 00:01:06
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [45]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem2<span class="o">=</span>fread<span class="p">(</span><span class="s">"enem_proc3.csv"</span><span class="p">,</span>drop<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span><span class="m">7</span><span class="o">:</span><span class="m">17</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="o">:</span><span class="m">81</span><span class="p">,</span><span class="m">82</span><span class="o">:</span><span class="m">93</span><span class="p">,</span><span class="m">94</span><span class="o">:</span><span class="m">97</span><span class="p">,</span><span class="m">102</span><span class="o">:</span><span class="m">117</span><span class="p">,</span><span class="m">144</span><span class="o">:</span><span class="m">158</span><span class="p">),</span>data.table<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> na.strings<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">""</span><span class="p">,</span><span class="s">"NA"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Read 827055 rows and 53 (of 167) columns from 0.723 GB file in 00:00:42
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Puttign everything into one dataset:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [46]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">=</span><span class="kp">rbind</span><span class="p">(</span>enem1<span class="p">,</span>enem2<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [47]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>str<span class="p">(</span>enem_br<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>'data.frame':	1686719 obs. of  53 variables:
+ $ CO_MUNICIPIO_RESIDENCIA: int  4203709 3550308 3557105 5107602 4118501 3304557 4115804 3551504 4101804 4106902 ...
+ $ NO_MUNICIPIO_RESIDENCIA: chr  "Canelinha" "S<e3>o Paulo" "Votuporanga" "Rondon<f3>polis" ...
+ $ CO_UF_RESIDENCIA       : int  42 35 35 51 41 33 41 35 41 41 ...
+ $ NU_IDADE               : int  19 25 22 18 20 20 20 18 24 17 ...
+ $ TP_SEXO                : chr  "M" "M" "M" "M" ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4202909 2111300 3550308 5107602 5108600 3304557 4115804 2313203 4101804 4106902 ...
+ $ NO_MUNICIPIO_NASCIMENTO: chr  "Brusque" "S<e3>o Lu<ed>s" "S<e3>o Paulo" "Rondon<f3>polis" ...
+ $ CO_UF_NASCIMENTO       : int  42 21 35 51 51 33 41 23 41 41 ...
+ $ SG_UF_NASCIMENTO       : chr  "SC" "MA" "SP" "MT" ...
+ $ TP_ST_CONCLUSAO        : int  1 1 1 1 1 1 1 1 1 2 ...
+ $ TP_ANO_CONCLUIU        : int  3 9 6 2 4 4 3 2 6 0 ...
+ $ TP_ESCOLA              : int  1 1 1 1 1 1 1 1 1 3 ...
+ $ TP_ENSINO              : chr  NA NA NA NA ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NU_NOTA_CN             : num  599 477 523 589 437 ...
+ $ NU_NOTA_CH             : num  658 553 580 650 590 ...
+ $ NU_NOTA_LC             : num  579 524 595 588 530 ...
+ $ NU_NOTA_MT             : num  576 430 562 591 496 ...
+ $ Q001                   : chr  "D" "H" "F" "B" ...
+ $ Q002                   : chr  "C" "E" "B" "E" ...
+ $ Q003                   : chr  "B" "A" "F" "C" ...
+ $ Q004                   : chr  "F" "A" "B" "F" ...
+ $ Q005                   : int  4 6 4 5 7 5 5 5 2 4 ...
+ $ Q006                   : chr  "F" "D" "D" "E" ...
+ $ Q007                   : chr  "A" "A" "A" "A" ...
+ $ Q008                   : chr  "D" "B" "B" "B" ...
+ $ Q009                   : chr  "C" "B" "D" "C" ...
+ $ Q010                   : chr  "B" "A" "A" "B" ...
+ $ Q011                   : chr  "A" "A" "A" "A" ...
+ $ Q012                   : chr  "B" "B" "B" "B" ...
+ $ Q013                   : chr  "B" "A" "A" "B" ...
+ $ Q014                   : chr  "B" "A" "B" "B" ...
+ $ Q015                   : chr  "A" "A" "A" "A" ...
+ $ Q016                   : chr  "B" "A" "A" "A" ...
+ $ Q017                   : chr  "A" "A" "A" "A" ...
+ $ Q018                   : chr  "B" "A" "A" "A" ...
+ $ Q019                   : chr  "D" "B" "B" "B" ...
+ $ Q020                   : chr  "A" "B" "A" "A" ...
+ $ Q021                   : chr  "B" "A" "A" "A" ...
+ $ Q022                   : chr  "D" "E" "C" "E" ...
+ $ Q023                   : chr  "B" "B" "B" "B" ...
+ $ Q024                   : chr  "C" "B" "B" "B" ...
+ $ Q025                   : chr  "B" "B" "B" "B" ...
+ $ Q026                   : chr  "C" "C" "B" "B" ...
+ $ Q042                   : chr  "C" "A" "A" "B" ...
+ $ Q043                   : chr  "A" "A" "A" "A" ...
+ $ Q044                   : chr  "A" "A" "A" "A" ...
+ $ Q045                   : chr  "A" "A" "A" "A" ...
+ $ Q046                   : chr  "A" "A" "A" "A" ...
+ $ Q047                   : chr  "D" "A" "A" "A" ...
+ $ Q048                   : chr  "A" "A" "A" "A" ...
+ $ Q049                   : chr  "A" "A" "B" "A" ...
+ $ Q050                   : chr  "A" "A" "A" "A" ...
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And eliminating all students who did not answer all questions:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [48]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">=</span>enem_br<span class="p">[</span>complete.cases<span class="p">(</span>enem_br<span class="p">),</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [49]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>str<span class="p">(</span>enem_br<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>'data.frame':	558022 obs. of  53 variables:
+ $ CO_MUNICIPIO_RESIDENCIA: int  4106902 2913606 3550308 3525904 4205902 2111300 3118304 4108403 3300456 4311403 ...
+ $ NO_MUNICIPIO_RESIDENCIA: chr  "Curitiba" "Ilh<e9>us" "S<e3>o Paulo" "Jundia<ed>" ...
+ $ CO_UF_RESIDENCIA       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ NU_IDADE               : int  17 17 17 17 17 18 18 17 17 20 ...
+ $ TP_SEXO                : chr  "F" "M" "F" "F" ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4106902 2913606 3550308 3550308 4214805 2111300 3118304 4107207 3300456 4323200 ...
+ $ NO_MUNICIPIO_NASCIMENTO: chr  "Curitiba" "Ilh<e9>us" "S<e3>o Paulo" "S<e3>o Paulo" ...
+ $ CO_UF_NASCIMENTO       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ SG_UF_NASCIMENTO       : chr  "PR" "BA" "SP" "SP" ...
+ $ TP_ST_CONCLUSAO        : int  2 2 2 2 2 2 2 2 2 2 ...
+ $ TP_ANO_CONCLUIU        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ TP_ESCOLA              : int  3 3 3 2 2 3 3 2 2 2 ...
+ $ TP_ENSINO              : chr  "1" "1" "1" "1" ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NU_NOTA_CN             : num  645 659 596 496 574 ...
+ $ NU_NOTA_CH             : num  694 653 722 618 614 ...
+ $ NU_NOTA_LC             : num  656 618 668 586 454 ...
+ $ NU_NOTA_MT             : num  780 732 741 648 463 ...
+ $ Q001                   : chr  "F" "E" "D" "G" ...
+ $ Q002                   : chr  "E" "C" "F" "G" ...
+ $ Q003                   : chr  "E" "B" "D" "E" ...
+ $ Q004                   : chr  "E" "B" "D" "E" ...
+ $ Q005                   : int  4 3 5 3 3 4 3 3 4 3 ...
+ $ Q006                   : chr  "J" "C" "L" "N" ...
+ $ Q007                   : chr  "D" "A" "A" "A" ...
+ $ Q008                   : chr  "E" "B" "C" "B" ...
+ $ Q009                   : chr  "D" "C" "D" "C" ...
+ $ Q010                   : chr  "D" "A" "B" "C" ...
+ $ Q011                   : chr  "A" "A" "A" "A" ...
+ $ Q012                   : chr  "B" "B" "B" "B" ...
+ $ Q013                   : chr  "B" "B" "B" "A" ...
+ $ Q014                   : chr  "B" "B" "B" "B" ...
+ $ Q015                   : chr  "B" "A" "A" "A" ...
+ $ Q016                   : chr  "B" "B" "B" "A" ...
+ $ Q017                   : chr  "A" "A" "B" "A" ...
+ $ Q018                   : chr  "B" "A" "B" "A" ...
+ $ Q019                   : chr  "D" "C" "C" "D" ...
+ $ Q020                   : chr  "B" "B" "B" "B" ...
+ $ Q021                   : chr  "B" "A" "A" "B" ...
+ $ Q022                   : chr  "D" "C" "D" "E" ...
+ $ Q023                   : chr  "B" "B" "B" "A" ...
+ $ Q024                   : chr  "D" "B" "B" "A" ...
+ $ Q025                   : chr  "B" "B" "B" "B" ...
+ $ Q026                   : chr  "A" "A" "A" "A" ...
+ $ Q042                   : chr  "C" "C" "C" "A" ...
+ $ Q043                   : chr  "A" "A" "A" "A" ...
+ $ Q044                   : chr  "A" "A" "A" "A" ...
+ $ Q045                   : chr  "A" "A" "A" "A" ...
+ $ Q046                   : chr  "B" "B" "B" "B" ...
+ $ Q047                   : chr  "D" "E" "D" "A" ...
+ $ Q048                   : chr  "A" "A" "A" "A" ...
+ $ Q049                   : chr  "A" "A" "A" "A" ...
+ $ Q050                   : chr  "A" "A" "A" "A" ...
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We are left with 558022 observations only. Let's save this into a file so we can load it more easily next time</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [50]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>write.csv<span class="p">(</span>enem_br<span class="p">,</span><span class="s">"enem_completo.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">=</span>read.csv<span class="p">(</span><span class="s">"enem_completo.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All the remaining students have the same value for the variables "TP_ST_CONCLUSAO" and "TP_ANO_CONCLUIU":</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">table</span><span class="p">(</span>enem_br<span class="o">$</span>TP_ST_CONCLUSAO<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+     2 
+558022 </pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [68]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">table</span><span class="p">(</span>enem_br<span class="o">$</span>TP_ANO_CONCLUIU<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+     0 
+558022 </pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So I eliminate these unnecessary columns:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">$</span>TP_ST_CONCLUSAO<span class="o">=</span><span class="kc">NULL</span>
+enem_br<span class="o">$</span>TP_ANO_CONCLUIU<span class="o">=</span><span class="kc">NULL</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Combining the science, humanities, language and math grades into one (nota is Portuguese for grade):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [71]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>NOTA<span class="o">=</span>enem_br<span class="o">$</span>NU_NOTA_CN<span class="o">+</span>enem_br<span class="o">$</span>NU_NOTA_CH<span class="o">+</span>enem_br<span class="o">$</span>NU_NOTA_LC<span class="o">+</span>enem_br<span class="o">$</span>NU_NOTA_MT
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [72]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>NOTA<span class="o">=</span>NOTA<span class="o">/</span><span class="m">4</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [73]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">$</span>NOTA<span class="o">=</span>NOTA
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [74]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>str<span class="p">(</span>enem_br<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>'data.frame':	558022 obs. of  53 variables:
+ $ X                      : int  10 36 39 40 62 76 85 90 93 101 ...
+ $ CO_MUNICIPIO_RESIDENCIA: int  4106902 2913606 3550308 3525904 4205902 2111300 3118304 4108403 3300456 4311403 ...
+ $ NO_MUNICIPIO_RESIDENCIA: Factor w/ 5228 levels "<c1>gua Azul do Norte",..: 1424 2058 4303 2502 1791 4260 1288 1747 558 2575 ...
+ $ CO_UF_RESIDENCIA       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ NU_IDADE               : int  17 17 17 17 17 18 18 17 17 20 ...
+ $ TP_SEXO                : Factor w/ 2 levels "F","M": 1 2 1 1 2 1 1 2 1 2 ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4106902 2913606 3550308 3550308 4214805 2111300 3118304 4107207 3300456 4323200 ...
+ $ NO_MUNICIPIO_NASCIMENTO: Factor w/ 4873 levels "<c1>gua Azul do Norte",..: 1323 1915 4019 4019 3713 3981 1199 1390 531 4805 ...
+ $ CO_UF_NASCIMENTO       : int  41 29 35 35 42 21 31 41 33 43 ...
+ $ SG_UF_NASCIMENTO       : Factor w/ 27 levels "AC","AL","AM",..: 18 5 26 26 24 10 11 18 19 23 ...
+ $ TP_ESCOLA              : int  3 3 3 2 2 3 3 2 2 2 ...
+ $ TP_ENSINO              : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NU_NOTA_CN             : num  645 659 596 496 574 ...
+ $ NU_NOTA_CH             : num  694 653 722 618 614 ...
+ $ NU_NOTA_LC             : num  656 618 668 586 454 ...
+ $ NU_NOTA_MT             : num  780 732 741 648 463 ...
+ $ Q001                   : Factor w/ 8 levels "A","B","C","D",..: 6 5 4 7 2 8 7 5 8 4 ...
+ $ Q002                   : Factor w/ 8 levels "A","B","C","D",..: 5 3 6 7 3 8 5 5 4 5 ...
+ $ Q003                   : Factor w/ 6 levels "A","B","C","D",..: 5 2 4 5 3 5 5 1 2 3 ...
+ $ Q004                   : Factor w/ 6 levels "A","B","C","D",..: 5 2 4 5 3 5 4 2 2 3 ...
+ $ Q005                   : int  4 3 5 3 3 4 3 3 4 3 ...
+ $ Q006                   : Factor w/ 17 levels "A","B","C","D",..: 10 3 12 14 9 7 10 6 3 7 ...
+ $ Q007                   : Factor w/ 4 levels "A","B","C","D": 4 1 1 1 1 2 1 1 1 1 ...
+ $ Q008                   : Factor w/ 5 levels "A","B","C","D",..: 5 2 3 2 3 3 2 2 2 2 ...
+ $ Q009                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 4 3 4 4 3 4 3 3 ...
+ $ Q010                   : Factor w/ 5 levels "A","B","C","D",..: 4 1 2 3 2 3 2 2 1 2 ...
+ $ Q011                   : Factor w/ 5 levels "A","B","C","D",..: 1 1 1 1 1 1 1 2 1 1 ...
+ $ Q012                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 2 2 2 2 2 2 2 ...
+ $ Q013                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 1 2 1 1 2 1 2 ...
+ $ Q014                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 2 3 2 1 2 2 2 ...
+ $ Q015                   : Factor w/ 5 levels "A","B","C","D",..: 2 1 1 1 1 1 1 1 1 1 ...
+ $ Q016                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 1 2 2 2 2 2 2 ...
+ $ Q017                   : Factor w/ 5 levels "A","B","C","D",..: 1 1 2 1 1 1 1 1 1 1 ...
+ $ Q018                   : Factor w/ 2 levels "A","B": 2 1 2 1 2 1 1 1 2 2 ...
+ $ Q019                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 3 4 4 4 2 3 4 3 ...
+ $ Q020                   : Factor w/ 2 levels "A","B": 2 2 2 2 2 1 2 2 2 2 ...
+ $ Q021                   : Factor w/ 2 levels "A","B": 2 1 1 2 2 1 2 1 2 1 ...
+ $ Q022                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 4 5 4 5 4 5 5 4 ...
+ $ Q023                   : Factor w/ 2 levels "A","B": 2 2 2 1 2 1 1 1 2 1 ...
+ $ Q024                   : Factor w/ 5 levels "A","B","C","D",..: 4 2 2 1 2 2 3 3 2 2 ...
+ $ Q025                   : Factor w/ 2 levels "A","B": 2 2 2 2 2 1 2 2 2 1 ...
+ $ Q026                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 3 ...
+ $ Q042                   : Factor w/ 8 levels "A","B","C","D",..: 3 3 3 1 1 4 3 1 1 1 ...
+ $ Q043                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q044                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q045                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 2 ...
+ $ Q046                   : Factor w/ 4 levels "A","B","C","D": 2 2 2 2 2 2 2 2 2 2 ...
+ $ Q047                   : Factor w/ 5 levels "A","B","C","D",..: 4 5 4 1 1 4 1 1 1 1 ...
+ $ Q048                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q049                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 2 1 1 1 1 2 ...
+ $ Q050                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ NOTA                   : num  694 666 682 587 526 ...
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [75]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">$</span>NU_NOTA_CN<span class="o">=</span><span class="kc">NULL</span>
+enem_br<span class="o">$</span>NU_NOTA_CH<span class="o">=</span><span class="kc">NULL</span>
+enem_br<span class="o">$</span>NU_NOTA_LC<span class="o">=</span><span class="kc">NULL</span>
+enem_br<span class="o">$</span>NU_NOTA_MT<span class="o">=</span><span class="kc">NULL</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Time to make a linear regression model. First, let's define the formula:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>f<span class="o">=</span>NOTA <span class="o">~</span> NU_IDADE <span class="o">+</span> TP_SEXO <span class="o">+</span> TP_ESTADO_CIVIL <span class="o">+</span> 
+    Q001 <span class="o">+</span> Q002 <span class="o">+</span> Q003 <span class="o">+</span> Q004 <span class="o">+</span> Q005 <span class="o">+</span> Q006 <span class="o">+</span> Q007 <span class="o">+</span> Q008 <span class="o">+</span> Q009 <span class="o">+</span> 
+    Q010 <span class="o">+</span> Q011 <span class="o">+</span> Q012 <span class="o">+</span> Q013 <span class="o">+</span> Q014 <span class="o">+</span> Q015 <span class="o">+</span> Q016 <span class="o">+</span> Q017 <span class="o">+</span> Q018 <span class="o">+</span> 
+    Q019 <span class="o">+</span> Q020 <span class="o">+</span> Q021 <span class="o">+</span> Q022 <span class="o">+</span> Q023 <span class="o">+</span> Q024 <span class="o">+</span> Q025 <span class="o">+</span> Q026 <span class="o">+</span> Q042 <span class="o">+</span> 
+    Q043 <span class="o">+</span> Q044 <span class="o">+</span> Q045 <span class="o">+</span> Q046 <span class="o">+</span> Q047 <span class="o">+</span> Q048 <span class="o">+</span> Q049 <span class="o">+</span> Q050
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Actually, I copied the above formula from my test notebooks. To build it, I used a command resembling the one below:</p>
+<p>f = as.formula(paste('NU_NOTA_MT ~', paste(colnames(enem_test)[3:4], collapse='+'),"+",paste(colnames(enem_test)[9:11], collapse='+'),"+",paste(colnames(enem_test)[13:62], collapse='+')))</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I will also split the dataset into 2, a training and a test set.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span>caTools<span class="p">)</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">93</span><span class="p">)</span>
+spl <span class="o">=</span> sample.split<span class="p">(</span>enem_br<span class="o">$</span>NOTA<span class="p">,</span> SplitRatio <span class="o">=</span> <span class="m">0.6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>train <span class="o">=</span> <span class="kp">subset</span><span class="p">(</span>enem_br<span class="p">,</span> spl<span class="o">==</span><span class="kc">TRUE</span><span class="p">)</span>
+test <span class="o">=</span> <span class="kp">subset</span><span class="p">(</span>enem_br<span class="p">,</span> spl<span class="o">==</span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Saving again...</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>write.csv<span class="p">(</span>train<span class="p">,</span><span class="s">"train.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>write.csv<span class="p">(</span>test<span class="p">,</span><span class="s">"test.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>test<span class="o">=</span>read.csv<span class="p">(</span><span class="s">"test.csv"</span><span class="p">)</span>
+train<span class="o">=</span>read.csv<span class="p">(</span><span class="s">"train.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>str<span class="p">(</span>train<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>'data.frame':	335228 obs. of  51 variables:
+ $ X.2                    : int  1 3 4 5 6 8 9 10 12 13 ...
+ $ X.1                    : int  1 3 4 5 6 8 9 10 12 13 ...
+ $ X                      : int  10 39 40 62 76 90 93 101 124 130 ...
+ $ CO_MUNICIPIO_RESIDENCIA: int  4106902 3550308 3525904 4205902 2111300 4108403 3300456 4311403 4314407 4211900 ...
+ $ NO_MUNICIPIO_RESIDENCIA: Factor w/ 5132 levels "<c1>gua Azul do Norte",..: 1400 4221 2463 1764 4180 1720 548 2534 3468 3276 ...
+ $ CO_UF_RESIDENCIA       : int  41 35 35 42 21 41 33 43 43 42 ...
+ $ NU_IDADE               : int  17 17 17 17 18 17 17 20 17 17 ...
+ $ TP_SEXO                : Factor w/ 2 levels "F","M": 1 1 1 2 1 2 1 2 2 1 ...
+ $ CO_MUNICIPIO_NASCIMENTO: int  4106902 3550308 3550308 4214805 2111300 4107207 3300456 4323200 4314407 4211900 ...
+ $ NO_MUNICIPIO_NASCIMENTO: Factor w/ 4600 levels "<c1>gua Azul do Norte",..: 1238 3794 3794 3508 3759 1301 494 4535 3096 2919 ...
+ $ CO_UF_NASCIMENTO       : int  41 35 35 42 21 41 33 43 43 42 ...
+ $ SG_UF_NASCIMENTO       : Factor w/ 27 levels "AC","AL","AM",..: 18 26 26 24 10 18 19 23 23 24 ...
+ $ TP_ESCOLA              : int  3 3 2 2 3 2 2 2 2 2 ...
+ $ TP_ENSINO              : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ TP_ESTADO_CIVIL        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Q001                   : Factor w/ 8 levels "A","B","C","D",..: 6 4 7 2 8 5 8 4 2 4 ...
+ $ Q002                   : Factor w/ 8 levels "A","B","C","D",..: 5 6 7 3 8 5 4 5 4 5 ...
+ $ Q003                   : Factor w/ 6 levels "A","B","C","D",..: 5 4 5 3 5 1 2 3 3 4 ...
+ $ Q004                   : Factor w/ 6 levels "A","B","C","D",..: 5 4 5 3 5 2 2 3 2 2 ...
+ $ Q005                   : int  4 5 3 3 4 3 4 3 4 5 ...
+ $ Q006                   : Factor w/ 17 levels "A","B","C","D",..: 10 12 14 9 7 6 3 7 3 6 ...
+ $ Q007                   : Factor w/ 4 levels "A","B","C","D": 4 1 1 1 2 1 1 1 1 1 ...
+ $ Q008                   : Factor w/ 5 levels "A","B","C","D",..: 5 3 2 3 3 2 2 2 2 3 ...
+ $ Q009                   : Factor w/ 5 levels "A","B","C","D",..: 4 4 3 4 4 4 3 3 4 4 ...
+ $ Q010                   : Factor w/ 5 levels "A","B","C","D",..: 4 2 3 2 3 2 1 2 1 1 ...
+ $ Q011                   : Factor w/ 5 levels "A","B","C","D",..: 1 1 1 1 1 2 1 1 1 2 ...
+ $ Q012                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 2 2 2 2 2 2 2 ...
+ $ Q013                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 1 2 1 2 1 2 2 2 ...
+ $ Q014                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 2 3 2 2 2 2 1 2 ...
+ $ Q015                   : Factor w/ 5 levels "A","B","C","D",..: 2 1 1 1 1 1 1 1 1 1 ...
+ $ Q016                   : Factor w/ 5 levels "A","B","C","D",..: 2 2 1 2 2 2 2 2 2 2 ...
+ $ Q017                   : Factor w/ 5 levels "A","B","C","D",..: 1 2 1 1 1 1 1 1 1 1 ...
+ $ Q018                   : Factor w/ 2 levels "A","B": 2 2 1 2 1 1 2 2 1 2 ...
+ $ Q019                   : Factor w/ 5 levels "A","B","C","D",..: 4 3 4 4 4 3 4 3 3 5 ...
+ $ Q020                   : Factor w/ 2 levels "A","B": 2 2 2 2 1 2 2 2 2 2 ...
+ $ Q021                   : Factor w/ 2 levels "A","B": 2 1 2 2 1 1 2 1 1 1 ...
+ $ Q022                   : Factor w/ 5 levels "A","B","C","D",..: 4 4 5 4 5 5 5 4 4 5 ...
+ $ Q023                   : Factor w/ 2 levels "A","B": 2 2 1 2 1 1 2 1 1 2 ...
+ $ Q024                   : Factor w/ 5 levels "A","B","C","D",..: 4 2 1 2 2 3 2 2 2 2 ...
+ $ Q025                   : Factor w/ 2 levels "A","B": 2 2 2 2 1 2 2 1 2 2 ...
+ $ Q026                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 3 3 2 ...
+ $ Q042                   : Factor w/ 8 levels "A","B","C","D",..: 3 3 1 1 4 1 1 1 1 1 ...
+ $ Q043                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q044                   : Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q045                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 2 1 1 ...
+ $ Q046                   : Factor w/ 4 levels "A","B","C","D": 2 2 2 2 2 2 2 2 2 2 ...
+ $ Q047                   : Factor w/ 5 levels "A","B","C","D",..: 4 4 1 1 4 1 1 1 1 1 ...
+ $ Q048                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Q049                   : Factor w/ 3 levels "A","B","C": 1 1 1 2 1 1 1 2 2 2 ...
+ $ Q050                   : Factor w/ 4 levels "A","B","C","D": 1 1 1 1 1 1 1 1 1 1 ...
+ $ NOTA                   : num  694 682 587 526 578 ...
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Train the model:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>train<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get predictions on the test set:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg_pred <span class="o">=</span> predict<span class="p">(</span>reg<span class="p">,</span> newdata<span class="o">=</span>test<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+Call:
+lm(formula = f, data = train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-513.81  -37.32   -1.62   35.88  362.85 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      4.683e+02  2.931e+00 159.807  < 2e-16 ***
+NU_IDADE        -2.839e-03  4.499e-02  -0.063 0.949684    
+TP_SEXOM         1.471e+01  2.012e-01  73.117  < 2e-16 ***
+TP_ESTADO_CIVIL  2.683e-02  6.543e-01   0.041 0.967294    
+Q001B            2.734e+00  8.376e-01   3.265 0.001096 ** 
+Q001C            5.394e+00  8.525e-01   6.327 2.50e-10 ***
+Q001D            4.372e+00  8.628e-01   5.067 4.04e-07 ***
+Q001E            7.349e+00  8.517e-01   8.628  < 2e-16 ***
+Q001F            1.553e+01  9.064e-01  17.132  < 2e-16 ***
+Q001G            1.695e+01  9.588e-01  17.674  < 2e-16 ***
+Q001H            7.324e+00  9.203e-01   7.958 1.75e-15 ***
+Q002B            2.396e+00  9.985e-01   2.399 0.016421 *  
+Q002C            4.046e+00  1.007e+00   4.020 5.83e-05 ***
+Q002D            2.322e+00  1.011e+00   2.296 0.021698 *  
+Q002E            5.411e+00  1.003e+00   5.397 6.78e-08 ***
+Q002F            1.215e+01  1.046e+00  11.617  < 2e-16 ***
+Q002G            1.137e+01  1.069e+00  10.628  < 2e-16 ***
+Q002H           -2.393e+00  1.164e+00  -2.056 0.039791 *  
+Q003B            8.272e-01  4.629e-01   1.787 0.073908 .  
+Q003C            2.821e+00  4.373e-01   6.451 1.11e-10 ***
+Q003D            7.615e+00  4.710e-01  16.167  < 2e-16 ***
+Q003E            6.825e+00  6.070e-01  11.244  < 2e-16 ***
+Q003F           -9.224e-01  5.132e-01  -1.797 0.072289 .  
+Q004B           -7.882e-02  4.806e-01  -0.164 0.869717    
+Q004C            9.304e-01  5.727e-01   1.625 0.104241    
+Q004D           -4.946e-02  5.386e-01  -0.092 0.926825    
+Q004E            3.810e+00  6.942e-01   5.489 4.04e-08 ***
+Q004F           -1.306e+00  5.545e-01  -2.354 0.018557 *  
+Q005            -2.461e+00  8.658e-02 -28.427  < 2e-16 ***
+Q006B           -1.098e+00  9.688e-01  -1.133 0.257121    
+Q006C            5.518e+00  9.683e-01   5.698 1.21e-08 ***
+Q006D            1.158e+01  9.928e-01  11.667  < 2e-16 ***
+Q006E            1.392e+01  1.010e+00  13.773  < 2e-16 ***
+Q006F            1.469e+01  1.012e+00  14.515  < 2e-16 ***
+Q006G            1.942e+01  1.019e+00  19.063  < 2e-16 ***
+Q006H            2.282e+01  1.055e+00  21.618  < 2e-16 ***
+Q006I            2.399e+01  1.081e+00  22.184  < 2e-16 ***
+Q006J            2.497e+01  1.095e+00  22.805  < 2e-16 ***
+Q006K            2.817e+01  1.142e+00  24.670  < 2e-16 ***
+Q006L            3.125e+01  1.235e+00  25.314  < 2e-16 ***
+Q006M            3.454e+01  1.323e+00  26.110  < 2e-16 ***
+Q006N            3.579e+01  1.221e+00  29.306  < 2e-16 ***
+Q006O            3.990e+01  1.233e+00  32.368  < 2e-16 ***
+Q006P            4.590e+01  1.257e+00  36.509  < 2e-16 ***
+Q006Q            5.505e+01  1.250e+00  44.049  < 2e-16 ***
+Q007B            1.801e+00  4.325e-01   4.165 3.12e-05 ***
+Q007C            6.178e+00  8.277e-01   7.463 8.47e-14 ***
+Q007D            5.637e+00  5.494e-01  10.261  < 2e-16 ***
+Q008B            2.242e+00  1.642e+00   1.366 0.172079    
+Q008C            4.354e+00  1.657e+00   2.627 0.008609 ** 
+Q008D            7.894e+00  1.691e+00   4.667 3.05e-06 ***
+Q008E            1.247e+01  1.751e+00   7.119 1.09e-12 ***
+Q009B           -9.152e+00  1.754e+00  -5.217 1.82e-07 ***
+Q009C           -1.037e+01  1.728e+00  -6.000 1.98e-09 ***
+Q009D           -9.857e+00  1.737e+00  -5.675 1.39e-08 ***
+Q009E           -9.703e+00  1.780e+00  -5.452 4.99e-08 ***
+Q010B           -1.216e+00  2.629e-01  -4.626 3.73e-06 ***
+Q010C           -2.477e+00  3.995e-01  -6.199 5.70e-10 ***
+Q010D           -6.360e+00  7.363e-01  -8.638  < 2e-16 ***
+Q010E           -8.494e+00  1.351e+00  -6.285 3.28e-10 ***
+Q011B           -4.733e+00  2.542e-01 -18.623  < 2e-16 ***
+Q011C           -1.102e+01  6.712e-01 -16.419  < 2e-16 ***
+Q011D           -1.208e+01  1.818e+00  -6.642 3.11e-11 ***
+Q011E           -1.858e+01  3.512e+00  -5.290 1.22e-07 ***
+Q012B            1.257e+00  1.134e+00   1.108 0.267665    
+Q012C           -4.345e+00  1.213e+00  -3.582 0.000341 ***
+Q012D           -1.034e+01  1.869e+00  -5.534 3.14e-08 ***
+Q012E           -9.593e+00  3.462e+00  -2.771 0.005586 ** 
+Q013B            7.550e+00  2.234e-01  33.796  < 2e-16 ***
+Q013C            1.248e+01  5.592e-01  22.312  < 2e-16 ***
+Q013D            1.424e+01  1.416e+00  10.056  < 2e-16 ***
+Q013E            1.181e+01  2.879e+00   4.100 4.13e-05 ***
+Q014B           -7.660e-01  2.964e-01  -2.584 0.009764 ** 
+Q014C           -8.723e+00  7.873e-01 -11.080  < 2e-16 ***
+Q014D           -1.045e+01  3.544e+00  -2.950 0.003177 ** 
+Q014E           -3.843e+00  6.752e+00  -0.569 0.569248    
+Q015B           -2.899e+00  2.567e-01 -11.297  < 2e-16 ***
+Q015C           -4.335e+00  1.767e+00  -2.453 0.014167 *  
+Q015D            8.084e+00  6.991e+00   1.156 0.247532    
+Q015E            1.934e+01  8.376e+00   2.309 0.020956 *  
+Q016B           -1.967e+00  2.612e-01  -7.532 5.01e-14 ***
+Q016C           -3.762e+00  1.106e+00  -3.401 0.000670 ***
+Q016D           -6.731e+00  4.888e+00  -1.377 0.168511    
+Q016E           -6.527e+00  8.162e+00  -0.800 0.423903    
+Q017B            1.865e+00  4.789e-01   3.893 9.88e-05 ***
+Q017C            7.738e+00  3.443e+00   2.248 0.024607 *  
+Q017D           -7.276e+00  7.792e+00  -0.934 0.350435    
+Q017E            8.846e+00  8.176e+00   1.082 0.279264    
+Q018B            2.708e+00  2.434e-01  11.126  < 2e-16 ***
+Q019B            6.148e-01  8.468e-01   0.726 0.467825    
+Q019C            1.672e+00  8.694e-01   1.923 0.054505 .  
+Q019D           -2.299e+00  9.052e-01  -2.540 0.011100 *  
+Q019E           -5.939e+00  9.668e-01  -6.142 8.13e-10 ***
+Q020B           -2.445e+00  2.257e-01 -10.832  < 2e-16 ***
+Q021B           -2.882e+00  2.413e-01 -11.940  < 2e-16 ***
+Q022B            6.050e-01  8.675e-01   0.697 0.485561    
+Q022C            6.189e+00  8.502e-01   7.280 3.35e-13 ***
+Q022D            6.269e+00  8.512e-01   7.366 1.77e-13 ***
+Q022E            5.668e+00  8.640e-01   6.560 5.37e-11 ***
+Q023B            1.256e+00  2.384e-01   5.270 1.37e-07 ***
+Q024B            8.209e+00  3.483e-01  23.570  < 2e-16 ***
+Q024C            1.798e+01  4.459e-01  40.326  < 2e-16 ***
+Q024D            2.448e+01  5.806e-01  42.168  < 2e-16 ***
+Q024E            3.035e+01  7.509e-01  40.425  < 2e-16 ***
+Q025B            2.467e+00  3.457e-01   7.138 9.52e-13 ***
+Q026B           -1.437e+00  3.038e-01  -4.730 2.24e-06 ***
+Q026C           -6.320e+00  2.856e-01 -22.129  < 2e-16 ***
+Q042B            8.232e+00  3.949e-01  20.844  < 2e-16 ***
+Q042C            2.121e+01  3.984e-01  53.245  < 2e-16 ***
+Q042D            1.260e+01  4.674e-01  26.966  < 2e-16 ***
+Q042E            1.012e+01  9.949e+00   1.017 0.308922    
+Q042F            3.280e+01  1.229e+01   2.669 0.007612 ** 
+Q042G           -9.886e+00  1.124e+01  -0.879 0.379289    
+Q042H           -7.798e+00  9.421e+00  -0.828 0.407815    
+Q043B           -6.485e+00  8.290e-01  -7.823 5.19e-15 ***
+Q043C           -1.593e+01  1.500e+00 -10.620  < 2e-16 ***
+Q043D           -2.742e+01  1.330e+00 -20.613  < 2e-16 ***
+Q044B           -4.343e+00  4.700e-01  -9.239  < 2e-16 ***
+Q044C           -1.097e+01  1.143e+00  -9.599  < 2e-16 ***
+Q045B           -2.572e+01  3.458e-01 -74.398  < 2e-16 ***
+Q045C           -7.258e+00  1.029e+00  -7.055 1.72e-12 ***
+Q045D           -8.600e+00  1.032e+00  -8.335  < 2e-16 ***
+Q046B            9.989e+00  1.117e+00   8.944  < 2e-16 ***
+Q046C           -8.859e-04  1.675e+00  -0.001 0.999578    
+Q046D           -3.680e+00  4.388e+00  -0.838 0.401762    
+Q047B           -1.171e+00  5.718e-01  -2.048 0.040569 *  
+Q047C            9.412e+00  9.358e-01  10.059  < 2e-16 ***
+Q047D            1.920e+01  3.932e-01  48.830  < 2e-16 ***
+Q047E            2.776e+01  5.492e-01  50.543  < 2e-16 ***
+Q048B           -3.962e+00  6.299e-01  -6.289 3.19e-10 ***
+Q048C           -5.708e+00  8.882e-01  -6.427 1.30e-10 ***
+Q048D            1.357e+01  8.678e-01  15.641  < 2e-16 ***
+Q049B           -7.064e+00  3.171e-01 -22.278  < 2e-16 ***
+Q049C           -1.217e+01  4.331e-01 -28.098  < 2e-16 ***
+Q050B           -1.396e+01  3.747e-01 -37.252  < 2e-16 ***
+Q050C            4.897e+00  8.175e-01   5.991 2.09e-09 ***
+Q050D            2.344e+00  8.340e-01   2.810 0.004956 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 56.16 on 335091 degrees of freedom
+Multiple R-squared:  0.4243,	Adjusted R-squared:  0.4241 
+F-statistic:  1816 on 136 and 335091 DF,  p-value: < 2.2e-16
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And calulate the out-of-sample $R^2$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>SSE<span class="o">=</span><span class="kp">sum</span><span class="p">((</span>reg_pred <span class="o">-</span> test<span class="o">$</span>NOTA<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span> 
+SST<span class="o">=</span><span class="kp">sum</span><span class="p">((</span><span class="kp">mean</span><span class="p">(</span>train<span class="o">$</span>NOTA<span class="p">)</span> <span class="o">-</span> test<span class="o">$</span>NOTA<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+r2<span class="o">=</span><span class="m">1</span><span class="o">-</span>SSE<span class="o">/</span>SST
+r2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+0.424231880065406
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Having a background in the physical sciences, 0.42 seems like a low $R^2$. The last scientific paper I worked on featured a linear model for which the $R^2$ sometimes dropped below 0.9. I tought that wasn't great, but given the inherent uncertainty of the data it was still good.</p>
+<p>However, a friend who studies geography told me that in certain fields of human knowledge it's almost impossible to obtain such high values of $R^2$. Moreover, I found this quotation while in the well-know book "Introduction to statistical learning":</p>
+<p>"... in certain problems in physics... we could expect to see an $R^2$ that is extremely close to 1... On the other hand, typical applications in biology, psychology, marketing and other domains, the linear model is  at best an extremely rough approximation to the data...  In this setting... $R^2$ value well bellow 0.1 might be more realistic!"</p>
+<p>This quelled my worries a bit.</p>
+<p>In addition, my out-of-sample $R^2$ was actually negative when I used the much smaler dataset I was running tests on.</p>
+<p>Given the circumstances, $0.42$ doesn't look so bad anymore.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Besides calculating the out-of-sample $R^2$ for the test set (hold-out cross validation), we can use a type of cross validation called leave-one-out cross-validation (LOOCV). This method would usually be computationally unfeasible in a data set with $n=558022$, since it involves computing the linear model $n$ times. Fortunately, for linear models, there is a "shortcut" that makes the cross-validation scheme as computationally expensive as training the model once, and it is implemented in $R$ (in the forecast library):</p>
+<p><a href="https://robjhyndman.com/hyndsight/loocv-linear-models/">https://robjhyndman.com/hyndsight/loocv-linear-models/</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We start by training the model on the whole set:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>total<span class="o">=</span><span class="kp">rbind</span><span class="p">(</span>train<span class="p">,</span>test<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg2<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span><span class="s">"forecast"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>CV<span class="p">(</span>reg2<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+<dl class="dl-horizontal">
+<dt>CV</dt>
+<dd>3114.66789081512</dd>
+<dt>AIC</dt>
+<dd>4488640.6944833</dd>
+<dt>AICc</dt>
+<dd>4488640.7632504</dd>
+<dt>BIC</dt>
+<dd>4490190.73168936</dd>
+<dt>AdjR2</dt>
+<dd>0.424236255769567</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The first number of the above list is the estimated MSE (mean squared error) for the model, as calculated by LOOCV (the CV row). AdjR2 is the adjusted $R^2$ of the model. The latter is very similar to what is obtained with reg. The MSE of reg (the model trained on the training set) is:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>MSE <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>reg<span class="o">$</span>residuals<span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>test<span class="p">)</span>
+MSE
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+4742.83287726525
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Which is much higher, since it was trained on a much smaller set. Model reg2 was trained on the whole set and is cross-validated.</p>
+<p>Let's take a look at the coefficients of reg2:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>results<span class="o">=</span><span class="kp">summary</span><span class="p">(</span>reg2<span class="p">)</span>
+foo<span class="o">=</span><span class="kp">cbind</span><span class="p">(</span>results<span class="o">$</span>coefficients<span class="p">[,</span><span class="m">1</span><span class="p">],</span>results<span class="o">$</span>coefficients<span class="p">[,</span><span class="m">4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>foo<span class="p">[</span><span class="kp">order</span><span class="p">(</span>foo<span class="p">[,</span><span class="m">1</span><span class="p">],</span>foo<span class="p">[,</span><span class="m">2</span><span class="p">],</span>decreasing<span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+<table>
+<tbody>
+<tr><th scope="row">(Intercept)</th><td>466.78364    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006Q</th><td> 53.52479    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006P</th><td> 44.44506    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006O</th><td> 39.34599    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006N</th><td> 35.07305    </td><td>2.720790e-303</td></tr>
+<tr><th scope="row">Q006M</th><td> 33.92957    </td><td>3.587055e-241</td></tr>
+<tr><th scope="row">Q042F</th><td> 32.60547    </td><td> 5.585935e-04</td></tr>
+<tr><th scope="row">Q006L</th><td> 31.01148    </td><td>5.232755e-232</td></tr>
+<tr><th scope="row">Q024E</th><td> 30.12478    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q047E</th><td> 27.89321    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006K</th><td> 27.86017    </td><td>5.220298e-219</td></tr>
+<tr><th scope="row">Q042E</th><td> 25.97141    </td><td> 2.003191e-04</td></tr>
+<tr><th scope="row">Q006J</th><td> 24.69926    </td><td>2.675835e-187</td></tr>
+<tr><th scope="row">Q024D</th><td> 23.86337    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006I</th><td> 23.66893    </td><td>2.409994e-176</td></tr>
+<tr><th scope="row">Q006H</th><td> 22.29963    </td><td>1.531752e-164</td></tr>
+<tr><th scope="row">Q042C</th><td> 20.99840    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q047D</th><td> 19.08748    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q006G</th><td> 18.97507    </td><td>2.830922e-128</td></tr>
+<tr><th scope="row">Q024C</th><td> 17.71110    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q001G</th><td> 16.34254    </td><td>1.003692e-109</td></tr>
+<tr><th scope="row">Q001F</th><td> 14.97134    </td><td>1.635241e-103</td></tr>
+<tr><th scope="row">Q017E</th><td> 14.74003    </td><td> 2.204035e-02</td></tr>
+<tr><th scope="row">Q048D</th><td> 14.70700    </td><td>1.820302e-105</td></tr>
+<tr><th scope="row">TP_SEXOM</th><td> 14.47265    </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q013E</th><td> 14.23821    </td><td> 3.743494e-10</td></tr>
+<tr><th scope="row">Q006F</th><td> 14.03593    </td><td> 6.099961e-72</td></tr>
+<tr><th scope="row">Q013D</th><td> 13.59287    </td><td> 3.134358e-35</td></tr>
+<tr><th scope="row">Q006E</th><td> 13.50812    </td><td> 5.350748e-67</td></tr>
+<tr><th scope="row">Q042D</th><td> 12.64642    </td><td>5.193704e-270</td></tr>
+<tr><th scope="row">...</th><td>...</td><td>...</td></tr>
+<tr><th scope="row">Q046D</th><td> -5.199401   </td><td> 1.131313e-01</td></tr>
+<tr><th scope="row">Q019E</th><td> -5.434678   </td><td> 3.490004e-13</td></tr>
+<tr><th scope="row">Q016D</th><td> -5.774210   </td><td> 1.176820e-01</td></tr>
+<tr><th scope="row">Q043B</th><td> -5.870863   </td><td> 1.838807e-20</td></tr>
+<tr><th scope="row">Q010D</th><td> -5.969771   </td><td> 7.751843e-26</td></tr>
+<tr><th scope="row">Q048C</th><td> -6.119877   </td><td> 1.905589e-19</td></tr>
+<tr><th scope="row">Q026C</th><td> -6.266650   </td><td>7.859301e-179</td></tr>
+<tr><th scope="row">Q016E</th><td> -6.327406   </td><td> 3.132359e-01</td></tr>
+<tr><th scope="row">Q049B</th><td> -6.938049   </td><td>3.046690e-177</td></tr>
+<tr><th scope="row">Q045C</th><td> -7.145751   </td><td> 1.523212e-19</td></tr>
+<tr><th scope="row">Q042G</th><td> -7.423303   </td><td> 3.836121e-01</td></tr>
+<tr><th scope="row">Q009B</th><td> -7.507605   </td><td> 2.485018e-08</td></tr>
+<tr><th scope="row">Q012E</th><td> -7.573540   </td><td> 5.579310e-03</td></tr>
+<tr><th scope="row">Q009D</th><td> -8.482336   </td><td> 2.012172e-10</td></tr>
+<tr><th scope="row">Q009E</th><td> -8.485656   </td><td> 5.383440e-10</td></tr>
+<tr><th scope="row">Q014C</th><td> -8.613471   </td><td> 1.939538e-45</td></tr>
+<tr><th scope="row">Q045D</th><td> -8.676882   </td><td> 4.953474e-28</td></tr>
+<tr><th scope="row">Q010E</th><td> -8.914279   </td><td> 1.948191e-17</td></tr>
+<tr><th scope="row">Q009C</th><td> -8.990476   </td><td> 1.246483e-11</td></tr>
+<tr><th scope="row">Q011C</th><td>-10.341189   </td><td> 1.208406e-89</td></tr>
+<tr><th scope="row">Q044C</th><td>-10.659357   </td><td> 8.157993e-34</td></tr>
+<tr><th scope="row">Q014D</th><td>-11.382535   </td><td> 3.395455e-05</td></tr>
+<tr><th scope="row">Q011D</th><td>-11.579681   </td><td> 1.788013e-16</td></tr>
+<tr><th scope="row">Q012D</th><td>-11.846309   </td><td> 2.004865e-16</td></tr>
+<tr><th scope="row">Q049C</th><td>-12.136516   </td><td>1.278363e-291</td></tr>
+<tr><th scope="row">Q050B</th><td>-13.711649   </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q011E</th><td>-15.417711   </td><td> 1.916887e-08</td></tr>
+<tr><th scope="row">Q043C</th><td>-16.140150   </td><td> 8.339730e-44</td></tr>
+<tr><th scope="row">Q045B</th><td>-25.796192   </td><td> 0.000000e+00</td></tr>
+<tr><th scope="row">Q043D</th><td>-28.631359   </td><td>3.602033e-172</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Question 006 is "What is the total monthly income of your family?". Option A, the baseline, stands for no income. The larger the family income, the more likely a student is to do well in the test. This is not surprising, but I suspect monthly income is strongly linked to other variables. In other words, I wonder if having a higher income is really the cause of a student doing well in the test, or having a larger income just means a student will have access to better schools, to computers, internet, transportation, etc. I will come back to this question later.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Question 042 aks "What kind of primary and middle school did you go to?". Options E and F  correspond to "I onlt attended and Indian school" and "I attended mostly and Indian school", respectively. I had no idea what an "Indian School" was. Turns out it is a school for Native American populations, where children are taught in both Portuguese and a native language (e.g. Guaraní). Q042F has a small p-value and its coefficient is large and positive. Q042E also has a positive coefficient, but it's p-value is too large for me to actually interpret it.</p>
+<p>Are these kinds of school doing a better job than average? I'm going to take a look at the average grade of the students who attended these schools.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>ss1<span class="o">=</span><span class="kp">subset</span><span class="p">(</span>total<span class="p">,</span>total<span class="o">$</span>Q042<span class="o">==</span><span class="s">'E'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>ss2<span class="o">=</span><span class="kp">subset</span><span class="p">(</span>total<span class="p">,</span>total<span class="o">$</span>Q042<span class="o">==</span><span class="s">'F'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">mean</span><span class="p">(</span>total<span class="o">$</span>NOTA<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+522.613868763239
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [17]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">mean</span><span class="p">(</span>ss1<span class="o">$</span>NOTA<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+559.1515625
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [18]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">mean</span><span class="p">(</span>ss2<span class="o">$</span>NOTA<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+543.145
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It seems to be the case that students who attended native schools have better grades, on average. However, if we look their total number:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [24]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">nrow</span><span class="p">(</span>ss1<span class="p">)</span><span class="o">+</span><span class="kp">nrow</span><span class="p">(</span>ss2<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+99
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see that is very small compared to total number of students in the set:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [69]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">nrow</span><span class="p">(</span>total<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+558022
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is not surprising, considering I only selected white students. Therefore, the conclusion that students who attended native schools do better than other can hardly be trusted.  Nonetheless, it might be worth exploring this in a set with more native students.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I want to try a very simple model where I only consider the student's income level and see what happens</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [22]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg3<span class="o">=</span>lm<span class="p">(</span><span class="s">"NOTA~Q006"</span><span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [23]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>CV<span class="p">(</span>reg3<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+<dl class="dl-horizontal">
+<dt>CV</dt>
+<dd>3896.01228156765</dd>
+<dt>AIC</dt>
+<dd>4613560.28030738</dd>
+<dt>AICc</dt>
+<dd>4613560.28153318</dd>
+<dt>BIC</dt>
+<dd>4613762.45907339</dd>
+<dt>AdjR2</dt>
+<dd>0.279623620082719</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [24]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg3<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+Call:
+lm(formula = "NOTA~Q006", data = total)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-475.42  -42.92   -4.30   39.36  342.17 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 479.9444     0.7971 602.130  < 2e-16 ***
+Q006B        -4.5262     0.8319  -5.441  5.3e-08 ***
+Q006C        10.6751     0.8217  12.992  < 2e-16 ***
+Q006D        23.9079     0.8349  28.637  < 2e-16 ***
+Q006E        30.9867     0.8452  36.663  < 2e-16 ***
+Q006F        36.4217     0.8422  43.245  < 2e-16 ***
+Q006G        49.6417     0.8423  58.936  < 2e-16 ***
+Q006H        61.0480     0.8695  70.211  < 2e-16 ***
+Q006I        69.2201     0.8880  77.949  < 2e-16 ***
+Q006J        78.8713     0.8935  88.273  < 2e-16 ***
+Q006K        88.8195     0.9286  95.644  < 2e-16 ***
+Q006L        97.2227     1.0079  96.457  < 2e-16 ***
+Q006M       104.3134     1.0855  96.097  < 2e-16 ***
+Q006N       109.6957     0.9825 111.654  < 2e-16 ***
+Q006O       119.9807     0.9811 122.289  < 2e-16 ***
+Q006P       130.6570     0.9908 131.872  < 2e-16 ***
+Q006Q       147.0085     0.9330 157.565  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 62.42 on 558005 degrees of freedom
+Multiple R-squared:  0.2796,	Adjusted R-squared:  0.2796 
+F-statistic: 1.354e+04 on 16 and 558005 DF,  p-value: < 2.2e-16
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is interesting, the out-of-sample $R^2$ is still, relatively, large. Many of the the questions (Q007 to Q025) are of the tpye "is there are car in your home?" or "is there a toilet in your home?" (with different levels indicating how many of the item are present in the students home). I think Q006 and these other questions depend on each other very strongly. I am going to try a few models with only Q006 and one of these variables:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [28]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg4<span class="o">=</span>lm<span class="p">(</span>NOTA<span class="o">~</span>Q008<span class="p">,</span>data<span class="o">=</span>train<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [29]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg4<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+Call:
+lm(formula = NOTA ~ Q008, data = train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-500.34  -47.14   -6.09   42.38  352.76 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  485.909      1.895 256.355  < 2e-16 ***
+Q008B         14.426      1.902   7.586 3.31e-14 ***
+Q008C         49.757      1.908  26.073  < 2e-16 ***
+Q008D         86.842      1.932  44.945  < 2e-16 ***
+Q008E        117.993      1.960  60.209  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 67.36 on 335223 degrees of freedom
+Multiple R-squared:  0.1713,	Adjusted R-squared:  0.1712 
+F-statistic: 1.732e+04 on 4 and 335223 DF,  p-value: < 2.2e-16
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [30]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>CV<span class="p">(</span>reg4<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+<dl class="dl-horizontal">
+<dt>CV</dt>
+<dd>4537.73787941826</dd>
+<dt>AIC</dt>
+<dd>2822682.03078526</dd>
+<dt>AICc</dt>
+<dd>2822682.03103585</dd>
+<dt>BIC</dt>
+<dd>2822746.36618232</dd>
+<dt>AdjR2</dt>
+<dd>0.171240788723082</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A lower adjusted $R^2$ and a higher MSE than reg3. Let's build single-variable models for all of these questions:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [31]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>qvector<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">"Q007"</span><span class="p">,</span>
+<span class="s">"Q008"</span><span class="p">,</span>  
+<span class="s">"Q009"</span><span class="p">,</span>
+<span class="s">"Q010"</span><span class="p">,</span>
+<span class="s">"Q011"</span><span class="p">,</span>
+<span class="s">"Q012"</span><span class="p">,</span>
+<span class="s">"Q013"</span><span class="p">,</span>
+<span class="s">"Q014"</span><span class="p">,</span>
+<span class="s">"Q015"</span><span class="p">,</span>
+<span class="s">"Q016"</span><span class="p">,</span> 
+<span class="s">"Q017"</span><span class="p">,</span>
+<span class="s">"Q018"</span><span class="p">,</span>
+<span class="s">"Q019"</span><span class="p">,</span>
+<span class="s">"Q020"</span><span class="p">,</span> 
+<span class="s">"Q021"</span><span class="p">,</span>
+<span class="s">"Q022"</span><span class="p">,</span>
+<span class="s">"Q023"</span><span class="p">,</span> 
+<span class="s">"Q024"</span><span class="p">,</span>
+<span class="s">"Q025"</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [32]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">length</span><span class="p">(</span>qvector<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+19
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [44]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>regs<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"list"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
+preds<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"list"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
+cvs<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"list"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [45]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">19</span> <span class="p">)</span>
+    <span class="p">{</span>
+  <span class="c1">#  print(qvector[i])</span>
+    f <span class="o">=</span> as.formula<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="s">'NOTA ~ '</span><span class="p">,</span> <span class="kp">paste</span><span class="p">(</span>qvector<span class="p">[</span>i<span class="p">])))</span>
+    regs<span class="p">[[</span>i<span class="p">]]</span><span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+    cvs<span class="p">[[</span>i<span class="p">]]</span><span class="o">=</span>CV<span class="p">(</span>regs<span class="p">[[</span>i<span class="p">]])</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [83]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>MSE<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"numeric"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
+r2s<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"numeric"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
+<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">19</span> <span class="p">)</span>
+    <span class="p">{</span>
+     MSE<span class="p">[</span>i<span class="p">]</span><span class="o">=</span>cvs<span class="p">[[</span>i<span class="p">]][</span><span class="m">1</span><span class="p">]</span>
+     r2s<span class="p">[</span>i<span class="p">]</span><span class="o">=</span>cvs<span class="p">[[</span>i<span class="p">]][</span><span class="m">5</span><span class="p">]</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [86]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">min</span><span class="p">(</span>MSE<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+4465.22563177163
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [87]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">max</span><span class="p">(</span>r2s<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+0.174351791703201
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [39]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">max</span><span class="p">(</span>r2s<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+0.173967669141494
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>None of these models can outperform reg3. What about all of them together?</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>f<span class="o">=</span>NOTA <span class="o">~</span> Q007 <span class="o">+</span> Q008 <span class="o">+</span> Q009 <span class="o">+</span> 
+         Q010 <span class="o">+</span> Q011 <span class="o">+</span> Q012 <span class="o">+</span> Q013 <span class="o">+</span> Q014 <span class="o">+</span> Q015 <span class="o">+</span> Q016 <span class="o">+</span> Q017 <span class="o">+</span> Q018 <span class="o">+</span> 
+         Q019 <span class="o">+</span> Q020 <span class="o">+</span> Q021 <span class="o">+</span> Q022 <span class="o">+</span> Q023 <span class="o">+</span> Q024 <span class="o">+</span> Q025
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg5<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg5<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+Call:
+lm(formula = f, data = total)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-507.74  -43.09   -4.19   39.39  367.57 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 469.99383    2.00478 234.437  < 2e-16 ***
+Q007B        22.45859    0.35929  62.509  < 2e-16 ***
+Q007C        31.16650    0.70504  44.205  < 2e-16 ***
+Q007D        30.95026    0.44725  69.201  < 2e-16 ***
+Q008B         1.13723    1.43048   0.795 0.426614    
+Q008C        15.84595    1.44348  10.978  < 2e-16 ***
+Q008D        32.18239    1.47027  21.889  < 2e-16 ***
+Q008E        46.77519    1.51733  30.827  < 2e-16 ***
+Q009B        -9.46246    1.50603  -6.283 3.32e-10 ***
+Q009C        -7.33013    1.48312  -4.942 7.72e-07 ***
+Q009D        -9.44661    1.48911  -6.344 2.24e-10 ***
+Q009E       -14.90373    1.52441  -9.777  < 2e-16 ***
+Q010B         7.50810    0.21801  34.440  < 2e-16 ***
+Q010C        12.43509    0.33322  37.318  < 2e-16 ***
+Q010D         7.59178    0.62919  12.066  < 2e-16 ***
+Q010E         2.57428    1.16947   2.201 0.027719 *  
+Q011B        -9.30013    0.21675 -42.907  < 2e-16 ***
+Q011C       -18.13959    0.57449 -31.575  < 2e-16 ***
+Q011D       -21.20366    1.57275 -13.482  < 2e-16 ***
+Q011E       -24.18887    3.06976  -7.880 3.29e-15 ***
+Q012B         0.55045    0.98231   0.560 0.575233    
+Q012C        -9.09455    1.04920  -8.668  < 2e-16 ***
+Q012D       -16.76382    1.61119 -10.405  < 2e-16 ***
+Q012E       -10.77767    3.05718  -3.525 0.000423 ***
+Q013B         8.53706    0.19121  44.647  < 2e-16 ***
+Q013C        12.13752    0.48026  25.273  < 2e-16 ***
+Q013D        11.53209    1.22732   9.396  < 2e-16 ***
+Q013E         7.52744    2.54299   2.960 0.003076 ** 
+Q014B         0.38697    0.25192   1.536 0.124526    
+Q014C       -14.07835    0.67901 -20.734  < 2e-16 ***
+Q014D       -19.95154    3.07249  -6.494 8.39e-11 ***
+Q014E        -9.72637    6.14186  -1.584 0.113281    
+Q015B        -5.57582    0.22048 -25.290  < 2e-16 ***
+Q015C        -5.34129    1.51677  -3.521 0.000429 ***
+Q015D         0.04250    5.69516   0.007 0.994046    
+Q015E        -3.83820    7.22536  -0.531 0.595272    
+Q016B         0.01574    0.22251   0.071 0.943622    
+Q016C        -5.43162    0.94045  -5.776 7.67e-09 ***
+Q016D        -7.71948    4.13012  -1.869 0.061614 .  
+Q016E        -8.27859    7.01631  -1.180 0.238038    
+Q017B        11.63894    0.40836  28.502  < 2e-16 ***
+Q017C        10.53262    2.97400   3.542 0.000398 ***
+Q017D        -2.25708    6.81518  -0.331 0.740505    
+Q017E        12.83935    7.20352   1.782 0.074689 .  
+Q018B         5.89161    0.20801  28.323  < 2e-16 ***
+Q019B         3.51448    0.73199   4.801 1.58e-06 ***
+Q019C         6.66269    0.75125   8.869  < 2e-16 ***
+Q019D         5.13100    0.78174   6.564 5.26e-11 ***
+Q019E         2.05448    0.83453   2.462 0.013823 *  
+Q020B        -3.51499    0.19415 -18.104  < 2e-16 ***
+Q021B         5.56289    0.20433  27.226  < 2e-16 ***
+Q022B        -2.40288    0.74771  -3.214 0.001311 ** 
+Q022C         7.27767    0.73149   9.949  < 2e-16 ***
+Q022D         6.87700    0.73207   9.394  < 2e-16 ***
+Q022E         3.14619    0.74096   4.246 2.18e-05 ***
+Q023B         7.76967    0.20211  38.443  < 2e-16 ***
+Q024B        13.44693    0.29804  45.117  < 2e-16 ***
+Q024C        32.41639    0.37963  85.389  < 2e-16 ***
+Q024D        45.66167    0.49290  92.639  < 2e-16 ***
+Q024E        57.18610    0.63527  90.018  < 2e-16 ***
+Q025B         8.40074    0.29535  28.444  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 62.46 on 557961 degrees of freedom
+Multiple R-squared:  0.2786,	Adjusted R-squared:  0.2785 
+F-statistic:  3592 on 60 and 557961 DF,  p-value: < 2.2e-16
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [91]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>CV<span class="p">(</span>reg5<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+<dl class="dl-horizontal">
+<dt>CV</dt>
+<dd>3902.26391781274</dd>
+<dt>AIC</dt>
+<dd>4614439.11469145</dd>
+<dt>AICc</dt>
+<dd>4614439.12869247</dd>
+<dt>BIC</dt>
+<dd>4615135.50821881</dd>
+<dt>AdjR2</dt>
+<dd>0.27854508325787</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Comparable MSE and $R^2$, despite the much larger number of variables! To simplify the model, I will keep Q006 and drop Q007 to Q025:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>f<span class="o">=</span>NOTA <span class="o">~</span> NU_IDADE <span class="o">+</span> TP_SEXO <span class="o">+</span> TP_ESTADO_CIVIL <span class="o">+</span> 
+    Q001 <span class="o">+</span> Q002 <span class="o">+</span> Q003 <span class="o">+</span> Q004 <span class="o">+</span> Q005 <span class="o">+</span> Q006  <span class="o">+</span> Q026 <span class="o">+</span> Q042 <span class="o">+</span> 
+    Q043 <span class="o">+</span> Q044 <span class="o">+</span> Q045 <span class="o">+</span> Q046 <span class="o">+</span> Q047 <span class="o">+</span> Q048 <span class="o">+</span> Q049 <span class="o">+</span> Q050
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>reg6<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg6<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_text output_subarea ">
+<pre>
+Call:
+lm(formula = f, data = total)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-502.67  -37.76   -1.81   36.24  398.33 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     465.44942    1.53783 302.667  < 2e-16 ***
+NU_IDADE          0.03045    0.03487   0.873 0.382433    
+TP_SEXOM         14.86392    0.15602  95.270  < 2e-16 ***
+TP_ESTADO_CIVIL  -0.28959    0.51035  -0.567 0.570422    
+Q001B             2.94285    0.64647   4.552 5.31e-06 ***
+Q001C             6.20202    0.65721   9.437  < 2e-16 ***
+Q001D             5.45959    0.66533   8.206 2.30e-16 ***
+Q001E             8.97886    0.65647  13.678  < 2e-16 ***
+Q001F            17.96665    0.69892  25.706  < 2e-16 ***
+Q001G            19.95704    0.74033  26.957  < 2e-16 ***
+Q001H             7.91723    0.71147  11.128  < 2e-16 ***
+Q002B             2.95967    0.77477   3.820 0.000133 ***
+Q002C             5.51776    0.78010   7.073 1.52e-12 ***
+Q002D             3.94693    0.78390   5.035 4.78e-07 ***
+Q002E             7.18082    0.77678   9.244  < 2e-16 ***
+Q002F            14.08468    0.81064  17.375  < 2e-16 ***
+Q002G            13.70621    0.82850  16.543  < 2e-16 ***
+Q002H            -2.59377    0.90331  -2.871 0.004087 ** 
+Q003B             1.62180    0.35621   4.553 5.29e-06 ***
+Q003C             4.27048    0.33619  12.703  < 2e-16 ***
+Q003D             9.81334    0.36221  27.093  < 2e-16 ***
+Q003E            10.12916    0.46896  21.599  < 2e-16 ***
+Q003F             0.52788    0.39549   1.335 0.181957    
+Q004B             1.03423    0.37053   2.791 0.005251 ** 
+Q004C             2.07767    0.44318   4.688 2.76e-06 ***
+Q004D             1.61194    0.41607   3.874 0.000107 ***
+Q004E             7.60238    0.53570  14.191  < 2e-16 ***
+Q004F            -0.23879    0.42897  -0.557 0.577750    
+Q005             -2.71360    0.06164 -44.026  < 2e-16 ***
+Q006B            -1.41035    0.75415  -1.870 0.061468 .  
+Q006C             7.93390    0.74976  10.582  < 2e-16 ***
+Q006D            15.73192    0.76425  20.585  < 2e-16 ***
+Q006E            18.75385    0.77551  24.182  < 2e-16 ***
+Q006F            20.01896    0.77441  25.850  < 2e-16 ***
+Q006G            25.85365    0.77694  33.276  < 2e-16 ***
+Q006H            29.92989    0.80399  37.227  < 2e-16 ***
+Q006I            31.93235    0.82333  38.785  < 2e-16 ***
+Q006J            33.89222    0.83221  40.726  < 2e-16 ***
+Q006K            38.11260    0.86694  43.962  < 2e-16 ***
+Q006L            41.97465    0.93975  44.666  < 2e-16 ***
+Q006M            45.38205    1.01077  44.899  < 2e-16 ***
+Q006N            47.43805    0.92416  51.331  < 2e-16 ***
+Q006O            53.11129    0.92957  57.136  < 2e-16 ***
+Q006P            59.69341    0.94612  63.093  < 2e-16 ***
+Q006Q            71.24532    0.91371  77.974  < 2e-16 ***
+Q026B            -0.67008    0.23604  -2.839 0.004527 ** 
+Q026C            -6.27155    0.22116 -28.357  < 2e-16 ***
+Q042B             8.74139    0.30743  28.434  < 2e-16 ***
+Q042C            22.40011    0.30788  72.755  < 2e-16 ***
+Q042D            13.28084    0.36338  36.548  < 2e-16 ***
+Q042E            26.75853    7.06218   3.789 0.000151 ***
+Q042F            32.14537    9.54707   3.367 0.000760 ***
+Q042G            -7.00915    8.61370  -0.814 0.415805    
+Q042H            -1.05568    7.43385  -0.142 0.887072    
+Q043B            -5.87760    0.64061  -9.175  < 2e-16 ***
+Q043C           -16.17907    1.17607 -13.757  < 2e-16 ***
+Q043D           -29.61844    1.03494 -28.619  < 2e-16 ***
+Q044B            -4.13920    0.36623 -11.302  < 2e-16 ***
+Q044C           -10.94076    0.88954 -12.299  < 2e-16 ***
+Q045B           -26.51183    0.26907 -98.530  < 2e-16 ***
+Q045C            -7.98864    0.79932  -9.994  < 2e-16 ***
+Q045D            -9.60496    0.79951 -12.014  < 2e-16 ***
+Q046B            12.04478    0.86701  13.892  < 2e-16 ***
+Q046C             0.89872    1.30182   0.690 0.489972    
+Q046D            -4.38915    3.31864  -1.323 0.185978    
+Q047B            -1.55932    0.44446  -3.508 0.000451 ***
+Q047C             9.00056    0.73020  12.326  < 2e-16 ***
+Q047D            19.70056    0.30458  64.682  < 2e-16 ***
+Q047E            28.10458    0.42895  65.520  < 2e-16 ***
+Q048B            -5.29095    0.49226 -10.748  < 2e-16 ***
+Q048C            -6.82110    0.68637  -9.938  < 2e-16 ***
+Q048D            15.64045    0.68198  22.934  < 2e-16 ***
+Q049B            -7.37509    0.24685 -29.877  < 2e-16 ***
+Q049C           -13.19650    0.33566 -39.315  < 2e-16 ***
+Q050B           -13.97421    0.29272 -47.739  < 2e-16 ***
+Q050C             3.28509    0.63583   5.167 2.38e-07 ***
+Q050D             2.02553    0.64887   3.122 0.001799 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 56.46 on 557945 degrees of freedom
+Multiple R-squared:  0.4106,	Adjusted R-squared:  0.4105 
+F-statistic:  5114 on 76 and 557945 DF,  p-value: < 2.2e-16
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [94]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>CV<span class="p">(</span>reg6<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea ">
+<dl class="dl-horizontal">
+<dt>CV</dt>
+<dd>3188.35820583082</dd>
+<dt>AIC</dt>
+<dd>4501710.93987035</dd>
+<dt>AICc</dt>
+<dd>4501710.96195863</dd>
+<dt>BIC</dt>
+<dd>4502587.04785638</dd>
+<dt>AdjR2</dt>
+<dd>0.410527913522544</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So reg6 has a MSE and $R^2$ comparable to those of reg2, even though the fomer has 20 less variables. Pretty cool.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Possible next steps:</p>
+<ul>
+<li>Use automated model selection methods, such as LASSO.</li>
+<li>Use unsupervised learning to see if I can build different models for different subsets of the dataset</li>
+<li>Use k-fold cross-validation instead of LOOCV. While LOOCV gives an almost unbiased MSE, it might overstimate a bit. k-fold cross-validation might give a more accurate estimate of the true (it has less variance), and I would like to compare their results.</li>
+<li>Use geographical data instead of the socio-economic questionnaire as the predictors to build the model (might have been easier to start this way).</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Observation: the piece of code below removes infrequent levels from factor variables in the dataset. I sometimes ran into the problem that very infrequent levels (e.g. very very high family income) would only appear in the test set. This was an issue because the model would have no coefficient for that particular level, so I got an error when it appeared in the test set and I tried to get predictions.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_b<span class="o">=</span>enem_br
+<span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">13</span><span class="o">:</span><span class="m">62</span><span class="p">)</span> <span class="p">{</span>
+ enem_b <span class="o">=</span> enem_b<span class="p">[</span><span class="o">!</span><span class="p">(</span><span class="kp">as.numeric</span><span class="p">(</span>enem_b<span class="p">[[</span>i<span class="p">]])</span> <span class="o">%in%</span> <span class="kp">which</span><span class="p">(</span><span class="kp">table</span><span class="p">(</span>enem_b<span class="p">[[</span>i<span class="p">]])</span><span class="o"><</span><span class="m">10</span><span class="p">)),]</span>
+<span class="p">}</span>
+enem_b<span class="o">=</span><span class="kp">droplevels</span><span class="p">(</span>enem_b<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+  </div>
+</article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+          <li class="list-inline-item"><a href="/authors.html">Authors</a></li>
+          <li class="list-inline-item"><a href="/archives.html">Archives</a></li>
+          <li class="list-inline-item"><a href="/categories.html">Categories</a></li>
+          <li class="list-inline-item"><a href="/tags.html">Tags</a></li>
+        </ul>
+        <p class="col-sm-6 text-sm-right text-muted">
+          Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
