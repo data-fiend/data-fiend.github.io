@@ -1077,7 +1077,7 @@ CV = \frac{1}{n} \sum^{n}_{i=1} \left[\frac{e_i}{(1-h_i)}\right]^2 \; .
 <p>The LOOCV method is implemented in R, and the webpage below links to the package that contains this implementantion and also shows the algebra involved in obtaining the formula.</p>
 <p><a href="https://robjhyndman.com/hyndsight/loocv-linear-models/">https://robjhyndman.com/hyndsight/loocv-linear-models/</a></p>
 <p>As a project, since this feature is not present in scikit-learn, I wrote a program that calculates LOOCV for linear models, using this special formula.</p>
-<p>There is a section on page 178 (page 192 in the <a href="http://www-bcf.usc.edu/~gareth/ISL/">pdf version</a>) the book "Introduction to Statistical Learning" on LOOCV.</p>
+<p>There is a section on page 178 (page 192 in the <a href="http://www-bcf.usc.edu/~gareth/ISL/">pdf version</a>) ofthe book "Introduction to Statistical Learning" on LOOCV.</p>
 </div>
 </div>
 </div>
@@ -1215,7 +1215,7 @@ CV = \frac{1}{n} \sum^{n}_{i=1} \left[\frac{e_i}{(1-h_i)}\right]^2 \; .
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The code below does the LOOCV using the special formula. The code before the the for loop calculates the hat matrix (more on it later).</p>
+<p>The code below does the LOOCV using the special formula. The code before the for loop calculates the hat matrix (more on it later).</p>
 </div>
 </div>
 </div>
@@ -1272,7 +1272,7 @@ CV = \frac{1}{n} \sum^{n}_{i=1} \left[\frac{e_i}{(1-h_i)}\right]^2 \; .
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can see that the MSE results are very similar (but not exactly equal, which is something I have to investigate),</p>
-<p>I wrote a python module where the algorithm is implemented.</p>
+<p>I wrote a python module where the above algorithm is implemented (with a few differences on which I will elaborate later).</p>
 </div>
 </div>
 </div>
@@ -1291,7 +1291,7 @@ CV = \frac{1}{n} \sum^{n}_{i=1} \left[\frac{e_i}{(1-h_i)}\right]^2 \; .
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Transforming the pandas dataframes into numpy arrays so I can feed it to my function:</p>
+<p>Transforming the pandas dataframes into numpy arrays so I can feed them to my function:</p>
 </div>
 </div>
 </div>
@@ -1340,7 +1340,7 @@ CV = \frac{1}{n} \sum^{n}_{i=1} \left[\frac{e_i}{(1-h_i)}\right]^2 \; .
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The program outputs the MSE as well as the $R^2$ in a tuple.</p>
+<p>The function fastfloo takes at least three arguments: i) the predictors, ii) the response variable and iii) an instance of a linear model (lm). The program outputs the MSE as well as the $R^2$ in a tuple.</p>
 </div>
 </div>
 </div>
@@ -1440,7 +1440,7 @@ D=A^{-1}X^{T} = (X^{T}X)^{-1}X^{T}\; .
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I also included a the "dumb" version of the algorithm in the fastloocv module:</p>
+<p>I also included the "dumb" version of the algorithm in the fastloocv module:</p>
 </div>
 </div>
 </div>
@@ -1573,7 +1573,7 @@ D=A^{-1}X^{T} = (X^{T}X)^{-1}X^{T}\; .
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Above is the time in seconds for the execution of the code</p>
+<p>Above is the time in seconds for the execution of the code.</p>
 </div>
 </div>
 </div>
@@ -1726,8 +1726,6 @@ D=A^{-1}X^{T} = (X^{T}X)^{-1}X^{T}\; .
 
 <span class="k">def</span> <span class="nf">floo</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">lm</span><span class="p">):</span>
 
- <span class="kn">import</span> <span class="nn">numpy</span>
- <span class="kn">import</span> <span class="nn">scipy</span>
  <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">LeaveOneOut</span>
  <span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">metrics</span>
 
@@ -1742,6 +1740,14 @@ D=A^{-1}X^{T} = (X^{T}X)^{-1}X^{T}\; .
 
  <span class="n">y_mean</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
  <span class="n">den</span><span class="o">=</span><span class="mi">0</span>
+
+ <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+     <span class="n">summand2</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">y_mean</span><span class="p">)</span>
+     <span class="n">den</span><span class="o">=</span><span class="n">den</span><span class="o">+</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">summand2</span><span class="p">,</span><span class="n">summand2</span><span class="p">)</span>
+
+ <span class="n">R2</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="n">CV</span><span class="o">/</span><span class="n">den</span>
+
+ <span class="k">return</span> <span class="n">CV</span><span class="p">,</span><span class="n">R2</span>
 </pre></div>
 </div>
 </div>
