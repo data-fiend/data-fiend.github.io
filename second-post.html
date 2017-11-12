@@ -1062,25 +1062,24 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I am going to explore data resulting from Brazil's "Exame Nacional do Ensino Médio" (ENEM), a school leaving test. It is roughly equivalent to the American SATs, Swiss Matura, French Bac, etc.</p>
-<p>I chose it because I am Brazilian, even though I've lived most of my life abroad, and my mother used to be a teacher in Brazil and I could ask her about the details of the test.</p>
-<p>This notebook represents a cleaned up version of the actual project. In order to get to this point, I had to run a lot of tests on the data. Nonetheless, by following my steps, you should be able to get from the raw data to my final results.</p>
-<p>I will be using R (which also works in jupyter) to do the analysis. I will mostly be playing around with linear regression models here. This is not supposed to be an analysis to end all analyses of this huge and rather complex  dataset.</p>
+<p>I am going to explore data resulting from Brazil's (I am Brazilian, even though I've lived most of my life abroad) "Exame Nacional do Ensino Médio (Enem)", a school-leaver's test. It is roughly equivalent to the American SATs, Swiss Matura, French Bac, etc...</p>
+<p>This notebook represents cleaned up version of the actual project, in order to get to this point, I had to run a lot of tests on the data. Nonetheless, by following what is here, one should be able to get from the raw data to my final results.</p>
+<p>I will be using R (which also works in jupyter) to do the analysis. I will mostly be playing around with linear regression models here. This is not supposed to be an analysis to end all analysis of this huge and, rather complex (in my humble opinion) dataset.</p>
 <p>I downloaded the data for 2015 from "Instituto Nacional de Estudos e Pesquisas Anísio Teixeira (INEP)":</p>
 <p><a href="http://portal.inep.gov.br/microdados">http://portal.inep.gov.br/microdados</a></p>
 <p>The file "microdados_enem2015" containts several subfolders, including an excel file that works as a dictionary for all the columns contained in the main .csv file:</p>
-<p>microdados_enem2015/microdados_enem_2015/DICIONÁRIO/Dicionário_Microdados_Enem_2015.xlsx</p>
+<p>microdados_enem2015\microdados_enem_2015\DICIONÁRIO\Dicionário_Microdados_Enem_2015.xlsx</p>
 <p>The actual data is in:</p>
-<p>microdados_enem2015/microdados_enem_2015/DADOS/MICRODADOS_ENEM_2015.csv</p>
-<p>This file contains 166 variables (columns) and 7746428 rows! The latter number corresponds to the total number of students who took the test in 2015 (the total population of Brazil is around 210 million). Among the variables, we can find those that correspond to personal student data (age, place of birth, gender, etc), as well as variables regarding information on the test itself, namely grades for 5 different tests: science, language, humanities, maths and writing (a composition). These are going to be our dependent variables.</p>
-<p>Moreover, 50 out of the 166 variables are part of a socio-economic questionnaire every student had to take. These are going to make the bulk of the predictors.</p>
+<p>\microdados_enem2015\microdados_enem_2015\DADOS\MICRODADOS_ENEM_2015.csv</p>
+<p>This file contains 166 variables (columns) and 7746428 rows! The latter number corresponds to the total number of students who took the test in 2015 (the total population of Brazil is around 210 million). Among all the variables, we can find those that correspond to personal student data (age, place of birth, gender, etc) as well as variables regarding information on the test itself, namely grades for 5 different tests: science, language, humanities, maths and writing. These are going to be our dependent variables.</p>
+<p>Moreover, 50 out of the 166 variables are part of a socio-economic questionnaire every student had to take. These are going to make the bulk of our predictors.</p>
 <p>I started exploring the data by loading the first 500 rows of the file:</p>
 <p>read.csv(file="MICRODADOS_ENEM_2015.csv",nrows=500)</p>
-<p>The complete .csv file is 5 GB. I actually tried loading everything into R, but my computer froze. This is due to the fact that R loads everything into RAM, which is limited on my personal computer (it's over 5 years old). In order to get around this problem I used an R module called "sqldf", which allowed me to select only a subset of students, using an SQL query.</p>
-<p>I limited myself, at first, to students from the Brazilian state of Paraná (where I was born). I used this data to explore the set and clean it, as well as to create some linear regression models. Unfortunately, after having cleaned the data, this subset was too small to give any meaningful results.</p>
+<p>The complete .csv file is 5 GB. I actually tried loading everything into R, but my computer froze. This is due to the fact that R loads everything into RAM memory, which is limited on my personal computer (it's over 5 years old). In order to get around this problem I used an R module called "sqldf", which allowed me to select only a subset of students, using an SQL "SELECT FROM" type command.</p>
+<p>I limited myself, at first, to students from the Brazilian state of Paraná (where I was born). I used this data to explore the data set and clean it, as well as to create some linear regression models. Unfortunately, after having cleaned the data, this subset was too small to give any meaningful results.</p>
 <p>Long story short, I ended up selecting students (from the whole of Brazil) without special needs and who are white (self-declared). Concerning the former choice, I noticed that there were over 50 variables describing students' special needs, making the dataset even more complex. Moreover, the special needs are very heterogeneous in their nature, which would have made the analysis much harder. As for the choice of race, I decided to pick the largest group (just under 50%) in order to reduce the number of data points by around half. Moreover, I suspect that race and social condition are highly correlated, and it might actually be wise to separate their analysis.</p>
-<p>I also eliminated questions Q027-Q033 that asked the student about their motivations for having a job. I did this because I only want to work with complete data points (i.e. students for whom no information is missing), and including these questions would have meant eliminating all students who had never held a job (a big chunk of the dataset). I did keep the question "have you every worked a paying job?" (Q026).</p>
-<p>Finally, I also eliminated questions of the type "was SOME REASON an important factor in deciding to take this test?", since they are inherently subjective and I wanted to restrict my analysis to strictly socio-economic factors.</p>
+<p>I also eliminated questions Q027-Q033 that asked the student about their motivations for working (a payed job). I did this because I only want to work with complete data points (i.e. students for whom no information is missing), and including these questions would have meant eliminating all students who had never held a job (a big chunk of the dataset). I did keep the question "have you every worked a paying job?" (Q026).</p>
+<p>Finally, I also eliminated questions of the type "was SOME REASON an important factor in deciding to take this test", since they are inherently subjective and I wanted to restrict my analysis to strictly socio-economic factors.</p>
 </div>
 </div>
 </div>
@@ -1134,7 +1133,7 @@ enem_br<span class="o">=</span>read.csv.sql<span class="p">(</span><span class="
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Saving the subset (much smaller than the initial one) I obtained with above SQL query:</p>
+<p>I saved the subset (much smaller than the initial one) I obtained with above command</p>
 </div>
 </div>
 </div>
@@ -1222,7 +1221,7 @@ This was simply a method I used to create smaller datasets and avoid overloading
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With command below, I load the files I had previously saved and at the same time eliminate the columns I am not going to use. Loading the data this way also automatically transforms categorical variables into the R variable type "factor".</p>
+<p>With command below, I load the files I had previously saved and at the same time eliminate the columns I am not going to use. Loading the data this way also automatically transform categorical variables into the R variable type "factor".</p>
 </div>
 </div>
 </div>
@@ -1275,7 +1274,7 @@ enem1<span class="o">=</span>fread<span class="p">(</span><span class="s">"enem_
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Putting everything into one dataset:</p>
+<p>Puttign everything into one dataset:</p>
 </div>
 </div>
 </div>
@@ -1463,7 +1462,7 @@ enem1<span class="o">=</span>fread<span class="p">(</span><span class="s">"enem_
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We are left with 558022 observations only. Let's save this into a file so we can load it more easily next time:</p>
+<p>We are left with 558022 observations only. Let's save this into a file so we can load it more easily next time</p>
 </div>
 </div>
 </div>
@@ -1473,6 +1472,17 @@ enem1<span class="o">=</span>fread<span class="p">(</span><span class="s">"enem_
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>write.csv<span class="p">(</span>enem_br<span class="p">,</span><span class="s">"enem_completo.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>enem_br<span class="o">=</span>read.csv<span class="p">(</span><span class="s">"enem_completo.csv"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1568,14 +1578,6 @@ enem_br<span class="o">$</span>TP_ANO_CONCLUIU<span class="o">=</span><span clas
 <div class=" highlight hl-r"><pre><span></span>NOTA<span class="o">=</span>enem_br<span class="o">$</span>NU_NOTA_CN<span class="o">+</span>enem_br<span class="o">$</span>NU_NOTA_CH<span class="o">+</span>enem_br<span class="o">$</span>NU_NOTA_LC<span class="o">+</span>enem_br<span class="o">$</span>NU_NOTA_MT
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>I did not include the writing test because its grading is much more complex than the other test, which are multiple choice. In fact there are a few variables descrining the outcome of the writing test. For example, a student be eliminated without even being graded, if they do not follow the instructions correctly.</p>
 </div>
 </div>
 </div>
@@ -1700,7 +1702,7 @@ enem_br<span class="o">$</span>NU_NOTA_MT<span class="o">=</span><span class="kc
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>f<span class="o">=</span>NOTA <span class="o">~</span> NU_IDADE <span class="o">+</span> TP_SEXO <span class="o">+</span> TP_ESTADO_CIVIL <span class="o">+</span> 
@@ -1726,7 +1728,7 @@ enem_br<span class="o">$</span>NU_NOTA_MT<span class="o">=</span><span class="kc
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Splitting the dataset into 2, a training and a test set:</p>
+<p>I will also split the dataset into 2, a training and a test set.</p>
 </div>
 </div>
 </div>
@@ -1880,7 +1882,7 @@ train<span class="o">=</span>read.csv<span class="p">(</span><span class="s">"tr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>reg<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>train<span class="p">)</span>
@@ -2086,7 +2088,7 @@ F-statistic:  1816 on 136 and 335091 DF,  p-value: < 2.2e-16
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And calulating the out-of-sample $R^2$:</p>
+<p>And calulate the out-of-sample $R^2$</p>
 </div>
 </div>
 </div>
@@ -2131,7 +2133,7 @@ r2
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Besides calculating the out-of-sample $R^2$ for the test set (hold-out cross validation), we can use a type of cross validation called leave-one-out cross-validation (LOOCV). This method would usually be computationally unfeasible in a data set with $n=558022$, since it involves computing the linear model $n$ times. Fortunately, for linear models, there is a "shortcut" that makes the cross-validation scheme as computationally expensive as training the model once, and it is implemented in $R$ in the forecast library:</p>
+<p>Besides calculating the out-of-sample $R^2$ for the test set (hold-out cross validation), we can use a type of cross validation called leave-one-out cross-validation (LOOCV). This method would usually be computationally unfeasible in a data set with $n=558022$, since it involves computing the linear model $n$ times. Fortunately, for linear models, there is a "shortcut" that makes the cross-validation scheme as computationally expensive as training the model once, and it is implemented in $R$ (in the forecast library):</p>
 <p><a href="https://robjhyndman.com/hyndsight/loocv-linear-models/">https://robjhyndman.com/hyndsight/loocv-linear-models/</a></p>
 </div>
 </div>
@@ -2140,13 +2142,13 @@ r2
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Start by training the model on the whole set:</p>
+<p>We start by training the model on the whole set:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>total<span class="o">=</span><span class="kp">rbind</span><span class="p">(</span>train<span class="p">,</span>test<span class="p">)</span>
@@ -2213,18 +2215,16 @@ r2
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The first number of the above list is the estimated MSE (mean squared error) for the model, as calculated by LOOCV (the CV row). AdjR2 is the adjusted $R^2$ of the model. The latter is very similar to what is obtained with reg. The MSE of reg is:</p>
+<p>The first number of the above list is the estimated MSE (mean squared error) for the model, as calculated by LOOCV (the CV row). AdjR2 is the adjusted $R^2$ of the model. The latter is very similar to what is obtained with reg. The MSE of reg (the model trained on the training set) is:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>MSE <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>reg<span class="o">$</span>residuals<span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>train<span class="p">)</span>
-MSE
-MSE<span class="o">=</span><span class="kp">sum</span><span class="p">((</span>reg_pred <span class="o">-</span> test<span class="o">$</span>NOTA<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>test<span class="p">)</span>
+<div class=" highlight hl-r"><pre><span></span>MSE <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>reg<span class="o">$</span>residuals<span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>test<span class="p">)</span>
 MSE
 </pre></div>
 </div>
@@ -2235,13 +2235,7 @@ MSE
 <div class="output_area">
 <div class="prompt"></div>
 <div class="output_html rendered_html output_subarea ">
-3152.10754488716
-</div>
-</div>
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
-3055.63360707604
+4742.83287726525
 </div>
 </div>
 </div>
@@ -2251,89 +2245,7 @@ MSE
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The training MSE is actually lower than the test MSE! I other words, I got "lucky" with the data in the test, which is not unusual with a high MSE (the model can be improved upon).</p>
-<p>The trainig, test and LOOCV MSEs are comparable, and I will carry on the analysis on reg2, since it was trained on a bigger data-set and cross-validated with a more advanced method.</p>
-<p>We can start by looking at the RMSE:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [12]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>RMSE<span class="o">=</span><span class="kp">sqrt</span><span class="p">(</span><span class="m">3114.66789081512</span><span class="p">)</span>
-RMSE
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
-55.8092097311467
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [23]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>median<span class="p">(</span>total<span class="o">$</span>NOTA<span class="p">)</span>
-<span class="kp">mean</span><span class="p">(</span>total<span class="o">$</span>NOTA<span class="p">)</span>
-quantile<span class="p">(</span>total<span class="o">$</span>NOTA<span class="p">,</span><span class="kt">c</span><span class="p">(</span><span class="m">.33</span><span class="p">,</span><span class="m">.66</span><span class="p">,</span><span class="m">.99</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
-512.15
-</div>
-</div>
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
-522.613868763239
-</div>
-</div>
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
-<dl class="dl-horizontal">
-<dt>33%</dt>
-<dd>482.7</dd>
-<dt>66%</dt>
-<dd>544.65</dd>
-<dt>99%</dt>
-<dd>716.044750000001</dd>
-</dl>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Looking at the RMSE, the mean and the percentiles above, we can see that, even though the model has a relatively high 
-MSE, we can still predict if a student will be above or below-average, and even if they will have a low, above-average or top score.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
+<p>Which is much higher, since it was trained on a much smaller set. Model reg2 was trained on the whole set and is cross-validated.</p>
 <p>Let's take a look at the coefficients of reg2:</p>
 </div>
 </div>
@@ -2447,7 +2359,7 @@ foo<span class="o">=</span><span class="kp">cbind</span><span class="p">(</span>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Question 042 aks "What kind of primary and middle school did you go to?". Options E and F  correspond to "I only attended and Indian school" and "I attended mostly and Indian school", respectively. I initially had no idea what an "Indian School" was. Turns out it is a school for Native American populations, where children are taught in both Portuguese and a native language (e.g. Guaraní). Q042F has a small p-value and its coefficient is large and positive. Q042E also has a positive coefficient, but it's p-value is too large for me to actually interpret it.</p>
+<p>Question 042 aks "What kind of primary and middle school did you go to?". Options E and F  correspond to "I onlt attended and Indian school" and "I attended mostly and Indian school", respectively. I had no idea what an "Indian School" was. Turns out it is a school for Native American populations, where children are taught in both Portuguese and a native language (e.g. Guaraní). Q042F has a small p-value and its coefficient is large and positive. Q042E also has a positive coefficient, but it's p-value is too large for me to actually interpret it.</p>
 <p>Are these kinds of school doing a better job than average? I'm going to take a look at the average grade of the students who attended these schools.</p>
 </div>
 </div>
@@ -2607,7 +2519,7 @@ foo<span class="o">=</span><span class="kp">cbind</span><span class="p">(</span>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I want to try a very simple model where I only consider the student's income level and see what happens:</p>
+<p>I want to try a very simple model where I only consider the student's income level and see what happens</p>
 </div>
 </div>
 </div>
@@ -2712,16 +2624,16 @@ F-statistic: 1.354e+04 on 16 and 558005 DF,  p-value: < 2.2e-16
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This is interesting, the out-of-sample $R^2$ is still relatively large. Many of the the questions (Q007 to Q025) are of the type "is there a car in your home?" or "is there a toilet in your home?", with different levels indicating how many of the given item are present in the students' home. I think Q006 and these other questions depend on each other very strongly. I am going to try a few models with only Q006 and one of these variables:</p>
+<p>This is interesting, the out-of-sample $R^2$ is still, relatively, large. Many of the the questions (Q007 to Q025) are of the tpye "is there are car in your home?" or "is there a toilet in your home?" (with different levels indicating how many of the item are present in the students home). I think Q006 and these other questions depend on each other very strongly. I am going to try a few models with only Q006 and one of these variables:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>reg4<span class="o">=</span>lm<span class="p">(</span>NOTA<span class="o">~</span>Q008<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+<div class=" highlight hl-r"><pre><span></span>reg4<span class="o">=</span>lm<span class="p">(</span>NOTA<span class="o">~</span>Q008<span class="p">,</span>data<span class="o">=</span>train<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2729,7 +2641,7 @@ F-statistic: 1.354e+04 on 16 and 558005 DF,  p-value: < 2.2e-16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg4<span class="p">)</span>
@@ -2744,25 +2656,25 @@ F-statistic: 1.354e+04 on 16 and 558005 DF,  p-value: < 2.2e-16
 <div class="output_text output_subarea ">
 <pre>
 Call:
-lm(formula = NOTA ~ Q008, data = total)
+lm(formula = NOTA ~ Q008, data = train)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--500.42  -47.12   -6.10   42.33  352.68 
+-500.34  -47.14   -6.09   42.38  352.76 
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  483.742      1.478  327.32   <2e-16 ***
-Q008B         16.673      1.483   11.24   <2e-16 ***
-Q008C         51.960      1.488   34.93   <2e-16 ***
-Q008D         88.530      1.506   58.79   <2e-16 ***
-Q008E        119.298      1.527   78.11   <2e-16 ***
+(Intercept)  485.909      1.895 256.355  < 2e-16 ***
+Q008B         14.426      1.902   7.586 3.31e-14 ***
+Q008C         49.757      1.908  26.073  < 2e-16 ***
+Q008D         86.842      1.932  44.945  < 2e-16 ***
+Q008E        117.993      1.960  60.209  < 2e-16 ***
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 66.98 on 558017 degrees of freedom
-Multiple R-squared:  0.1705,	Adjusted R-squared:  0.1705 
-F-statistic: 2.867e+04 on 4 and 558017 DF,  p-value: < 2.2e-16
+Residual standard error: 67.36 on 335223 degrees of freedom
+Multiple R-squared:  0.1713,	Adjusted R-squared:  0.1712 
+F-statistic: 1.732e+04 on 4 and 335223 DF,  p-value: < 2.2e-16
 </pre>
 </div>
 </div>
@@ -2878,10 +2790,11 @@ cvs<span class="o">=</span><span class="kt">vector</span><span class="p">(</span
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">19</span> <span class="p">)</span>
-<span class="p">{</span>
- f <span class="o">=</span> as.formula<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="s">'NOTA ~ '</span><span class="p">,</span> <span class="kp">paste</span><span class="p">(</span>qvector<span class="p">[</span>i<span class="p">])))</span>
- regs<span class="p">[[</span>i<span class="p">]]</span><span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
- cvs<span class="p">[[</span>i<span class="p">]]</span><span class="o">=</span>CV<span class="p">(</span>regs<span class="p">[[</span>i<span class="p">]])</span>
+    <span class="p">{</span>
+  <span class="c1">#  print(qvector[i])</span>
+    f <span class="o">=</span> as.formula<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="s">'NOTA ~ '</span><span class="p">,</span> <span class="kp">paste</span><span class="p">(</span>qvector<span class="p">[</span>i<span class="p">])))</span>
+    regs<span class="p">[[</span>i<span class="p">]]</span><span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
+    cvs<span class="p">[[</span>i<span class="p">]]</span><span class="o">=</span>CV<span class="p">(</span>regs<span class="p">[[</span>i<span class="p">]])</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -2896,10 +2809,10 @@ cvs<span class="o">=</span><span class="kt">vector</span><span class="p">(</span
 <div class=" highlight hl-r"><pre><span></span>MSE<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"numeric"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
 r2s<span class="o">=</span><span class="kt">vector</span><span class="p">(</span><span class="s">"numeric"</span><span class="p">,</span> <span class="m">19</span><span class="p">)</span>
 <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">19</span> <span class="p">)</span>
- <span class="p">{</span>
-  MSE<span class="p">[</span>i<span class="p">]</span><span class="o">=</span>cvs<span class="p">[[</span>i<span class="p">]][</span><span class="m">1</span><span class="p">]</span>
-  r2s<span class="p">[</span>i<span class="p">]</span><span class="o">=</span>cvs<span class="p">[[</span>i<span class="p">]][</span><span class="m">5</span><span class="p">]</span>
-  <span class="p">}</span>
+    <span class="p">{</span>
+     MSE<span class="p">[</span>i<span class="p">]</span><span class="o">=</span>cvs<span class="p">[[</span>i<span class="p">]][</span><span class="m">1</span><span class="p">]</span>
+     r2s<span class="p">[</span>i<span class="p">]</span><span class="o">=</span>cvs<span class="p">[[</span>i<span class="p">]][</span><span class="m">5</span><span class="p">]</span>
+    <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -2978,7 +2891,7 @@ r2s<span class="o">=</span><span class="kt">vector</span><span class="p">(</span
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>f<span class="o">=</span>NOTA <span class="o">~</span> Q007 <span class="o">+</span> Q008 <span class="o">+</span> Q009 <span class="o">+</span> 
@@ -2991,7 +2904,7 @@ r2s<span class="o">=</span><span class="kt">vector</span><span class="p">(</span
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>reg5<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
@@ -3002,7 +2915,7 @@ r2s<span class="o">=</span><span class="kt">vector</span><span class="p">(</span
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg5<span class="p">)</span>
@@ -3087,7 +3000,7 @@ Q024D        45.66167    0.49290  92.639  < 2e-16 ***
 Q024E        57.18610    0.63527  90.018  < 2e-16 ***
 Q025B         8.40074    0.29535  28.444  < 2e-16 ***
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 62.46 on 557961 degrees of freedom
 Multiple R-squared:  0.2786,	Adjusted R-squared:  0.2785 
@@ -3140,7 +3053,7 @@ F-statistic:  3592 on 60 and 557961 DF,  p-value: < 2.2e-16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>f<span class="o">=</span>NOTA <span class="o">~</span> NU_IDADE <span class="o">+</span> TP_SEXO <span class="o">+</span> TP_ESTADO_CIVIL <span class="o">+</span> 
@@ -3151,32 +3064,9 @@ F-statistic:  3592 on 60 and 557961 DF,  p-value: < 2.2e-16
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The model above uses the following predictors:</p>
-<p>-Q001: father's highest level of education,</p>
-<p>-Q002: mother's highest level of education,</p>
-<p>-Q003: father's occupation category,</p>
-<p>-Q004: mother's occupation category,</p>
-<p>-Q005: number of people living in the student's home,</p>
-<p>-Q006: family income,</p>
-<p>-Q026: does the student have, or has ever had a job,</p>
-<p>-Q042  and Q043: type of primary school the student attended,</p>
-<p>-Q044: whether student attended night school during primary schooling,</p>
-<p>-Q045: whether the student ever flunked or abandonned primary school,</p>
-<p>-Q046: whether the student has finished secondary school,</p>
-<p>-Q047  and Q048: type of secondary school the student attended,</p>
-<p>-Q049: whether student attended night school during secondary schooling</p>
-<p>-Q050: whether the student ever flunked or abandonned primary school.</p>
-<p>A relatively simple model of socio-economic predictors.</p>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>reg6<span class="o">=</span>lm<span class="p">(</span>f<span class="p">,</span>data<span class="o">=</span>total<span class="p">)</span>
@@ -3187,7 +3077,7 @@ F-statistic:  3592 on 60 and 557961 DF,  p-value: < 2.2e-16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>reg6<span class="p">)</span>
@@ -3288,7 +3178,7 @@ Q050B           -13.97421    0.29272 -47.739  < 2e-16 ***
 Q050C             3.28509    0.63583   5.167 2.38e-07 ***
 Q050D             2.02553    0.64887   3.122 0.001799 ** 
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 56.46 on 557945 degrees of freedom
 Multiple R-squared:  0.4106,	Adjusted R-squared:  0.4105 
@@ -3339,125 +3229,16 @@ F-statistic:  5114 on 76 and 557945 DF,  p-value: < 2.2e-16
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [19]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>results<span class="o">=</span><span class="kp">summary</span><span class="p">(</span>reg6<span class="p">)</span>
-foo<span class="o">=</span><span class="kp">cbind</span><span class="p">(</span><span class="kp">abs</span><span class="p">(</span>results<span class="o">$</span>coefficients<span class="p">[,</span><span class="m">1</span><span class="p">]),</span>results<span class="o">$</span>coefficients<span class="p">[,</span><span class="m">1</span><span class="p">],</span>results<span class="o">$</span>coefficients<span class="p">[,</span><span class="m">4</span><span class="p">])</span>
-foo<span class="p">[</span><span class="kp">order</span><span class="p">(</span>foo<span class="p">[,</span><span class="m">1</span><span class="p">],</span>foo<span class="p">[,</span><span class="m">1</span><span class="p">],</span>foo<span class="p">[,</span><span class="m">2</span><span class="p">],</span>decreasing<span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span> <span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_html rendered_html output_subarea ">
-<table>
-<tbody>
-<tr><th scope="row">(Intercept)</th><td>465.44942    </td><td>465.44942    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006Q</th><td> 71.24532    </td><td> 71.24532    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006P</th><td> 59.69341    </td><td> 59.69341    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006O</th><td> 53.11129    </td><td> 53.11129    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006N</th><td> 47.43805    </td><td> 47.43805    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006M</th><td> 45.38205    </td><td> 45.38205    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006L</th><td> 41.97465    </td><td> 41.97465    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006K</th><td> 38.11260    </td><td> 38.11260    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006J</th><td> 33.89222    </td><td> 33.89222    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q042F</th><td> 32.14537    </td><td> 32.14537    </td><td> 7.598490e-04</td></tr>
-<tr><th scope="row">Q006I</th><td> 31.93235    </td><td> 31.93235    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006H</th><td> 29.92989    </td><td> 29.92989    </td><td>5.976694e-303</td></tr>
-<tr><th scope="row">Q043D</th><td> 29.61844    </td><td>-29.61844    </td><td>5.335621e-180</td></tr>
-<tr><th scope="row">Q047E</th><td> 28.10458    </td><td> 28.10458    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q042E</th><td> 26.75853    </td><td> 26.75853    </td><td> 1.512764e-04</td></tr>
-<tr><th scope="row">Q045B</th><td> 26.51183    </td><td>-26.51183    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006G</th><td> 25.85365    </td><td> 25.85365    </td><td>1.473171e-242</td></tr>
-<tr><th scope="row">Q042C</th><td> 22.40011    </td><td> 22.40011    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006F</th><td> 20.01896    </td><td> 20.01896    </td><td>2.938364e-147</td></tr>
-<tr><th scope="row">Q001G</th><td> 19.95704    </td><td> 19.95704    </td><td>5.965929e-160</td></tr>
-<tr><th scope="row">Q047D</th><td> 19.70056    </td><td> 19.70056    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q006E</th><td> 18.75385    </td><td> 18.75385    </td><td>3.967932e-129</td></tr>
-<tr><th scope="row">Q001F</th><td> 17.96665    </td><td> 17.96665    </td><td>1.207918e-145</td></tr>
-<tr><th scope="row">Q043C</th><td> 16.17907    </td><td>-16.17907    </td><td> 4.707003e-43</td></tr>
-<tr><th scope="row">Q006D</th><td> 15.73192    </td><td> 15.73192    </td><td> 4.075563e-94</td></tr>
-<tr><th scope="row">Q048D</th><td> 15.64045    </td><td> 15.64045    </td><td>2.413620e-116</td></tr>
-<tr><th scope="row">TP_SEXOM</th><td> 14.86392    </td><td> 14.86392    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q002F</th><td> 14.08468    </td><td> 14.08468    </td><td> 1.334756e-67</td></tr>
-<tr><th scope="row">Q050B</th><td> 13.97421    </td><td>-13.97421    </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q002G</th><td> 13.70621    </td><td> 13.70621    </td><td> 1.846060e-61</td></tr>
-<tr><th scope="row">⋮</th><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-<tr><th scope="row">Q048C</th><td>6.82110486   </td><td>-6.82110486  </td><td> 2.857721e-23</td></tr>
-<tr><th scope="row">Q026C</th><td>6.27154855   </td><td>-6.27154855  </td><td>9.196856e-177</td></tr>
-<tr><th scope="row">Q001C</th><td>6.20201687   </td><td> 6.20201687  </td><td> 3.852346e-21</td></tr>
-<tr><th scope="row">Q043B</th><td>5.87759926   </td><td>-5.87759926  </td><td> 4.528240e-20</td></tr>
-<tr><th scope="row">Q002C</th><td>5.51776222   </td><td> 5.51776222  </td><td> 1.516629e-12</td></tr>
-<tr><th scope="row">Q001D</th><td>5.45959291   </td><td> 5.45959291  </td><td> 2.295739e-16</td></tr>
-<tr><th scope="row">Q048B</th><td>5.29095456   </td><td>-5.29095456  </td><td> 6.071125e-27</td></tr>
-<tr><th scope="row">Q046D</th><td>4.38914634   </td><td>-4.38914634  </td><td> 1.859778e-01</td></tr>
-<tr><th scope="row">Q003C</th><td>4.27048377   </td><td> 4.27048377  </td><td> 5.780167e-37</td></tr>
-<tr><th scope="row">Q044B</th><td>4.13919548   </td><td>-4.13919548  </td><td> 1.291303e-29</td></tr>
-<tr><th scope="row">Q002D</th><td>3.94693332   </td><td> 3.94693332  </td><td> 4.780118e-07</td></tr>
-<tr><th scope="row">Q050C</th><td>3.28508604   </td><td> 3.28508604  </td><td> 2.384711e-07</td></tr>
-<tr><th scope="row">Q002B</th><td>2.95966823   </td><td> 2.95966823  </td><td> 1.334246e-04</td></tr>
-<tr><th scope="row">Q001B</th><td>2.94284884   </td><td> 2.94284884  </td><td> 5.310010e-06</td></tr>
-<tr><th scope="row">Q005</th><td>2.71359628   </td><td>-2.71359628  </td><td> 0.000000e+00</td></tr>
-<tr><th scope="row">Q002H</th><td>2.59377466   </td><td>-2.59377466  </td><td> 4.086584e-03</td></tr>
-<tr><th scope="row">Q004C</th><td>2.07766608   </td><td> 2.07766608  </td><td> 2.758606e-06</td></tr>
-<tr><th scope="row">Q050D</th><td>2.02553330   </td><td> 2.02553330  </td><td> 1.798683e-03</td></tr>
-<tr><th scope="row">Q003B</th><td>1.62180277   </td><td> 1.62180277  </td><td> 5.290869e-06</td></tr>
-<tr><th scope="row">Q004D</th><td>1.61193878   </td><td> 1.61193878  </td><td> 1.069776e-04</td></tr>
-<tr><th scope="row">Q047B</th><td>1.55931969   </td><td>-1.55931969  </td><td> 4.508808e-04</td></tr>
-<tr><th scope="row">Q006B</th><td>1.41034937   </td><td>-1.41034937  </td><td> 6.146811e-02</td></tr>
-<tr><th scope="row">Q042H</th><td>1.05568135   </td><td>-1.05568135  </td><td> 8.870721e-01</td></tr>
-<tr><th scope="row">Q004B</th><td>1.03423091   </td><td> 1.03423091  </td><td> 5.250836e-03</td></tr>
-<tr><th scope="row">Q046C</th><td>0.89871577   </td><td> 0.89871577  </td><td> 4.899721e-01</td></tr>
-<tr><th scope="row">Q026B</th><td>0.67007951   </td><td>-0.67007951  </td><td> 4.527444e-03</td></tr>
-<tr><th scope="row">Q003F</th><td>0.52787576   </td><td> 0.52787576  </td><td> 1.819571e-01</td></tr>
-<tr><th scope="row">TP_ESTADO_CIVIL</th><td>0.28958958   </td><td>-0.28958958  </td><td> 5.704218e-01</td></tr>
-<tr><th scope="row">Q004F</th><td>0.23879443   </td><td>-0.23879443  </td><td> 5.777501e-01</td></tr>
-<tr><th scope="row">NU_IDADE</th><td>0.03045392   </td><td> 0.03045392  </td><td> 3.824332e-01</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Looking at the table above, we can see that family income still has the largest coefficients. Unfortunately, this isn't very helpful, since there is nothing educators or the goverment can really do about this ("be rich" is not good advice).</p>
-<p>Having studied in a private school (Q042 C and D, Q050 C and D), also contributes to having a higher grade. Once again, there is not much that can be done here, if one wants to improve public education.</p>
-<p>Finally, it seems that flunking either primary or secondary school has a negative impact on the test results. This is not very surprising, but does this indicate a cause and effect relation or just correlation? In other words, would it be helpful to not flunk students (and maybe give them more support as they progress)?</p>
-<p>One interesting results is, regarding the issues described in the previous two paragraphs, that the coeffients related to questions about primary school are larger than the corresponding ones related to secondary school, which I find counter-intuitive (the is a secondary school test), but possibly useful.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><font color="red">OBSERVATION </font></p>
-<p>I have to mention that, I checked if the variance's distribution is homogenous and if the residuals are normally distributed. The homogeneity of variance is good, but there's an issue with the distribution of the residuals. The result is OK, but there's a slight deviation from normality for some of the data-points. I don't think it's enough to invalidate the model, but those points might need to be investigated. This means my p-values might be somewhat innacurate, but the coefficients will still be unbiaesed.</p>
-<p>Unfortunately, I have not figured out how to display images in the notebook, so I will try to upload them somewhere else.</p>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Possible next steps:</p>
 <ul>
-<li>More careful analysis of data points that correspond to residuals deviating from normality.</li>
 <li>Use automated model selection methods, such as LASSO.</li>
-<li>Use unsupervised learning to see if I can build different models for different subsets of the dataset.</li>
-<li>Use k-fold cross-validation instead of LOOCV. While LOOCV gives an almost unbiased MSE, it might overestimate a bit. k-fold cross-validation might give a more accurate estimate of the true MSE (it has less variance), and I would like to compare their results.</li>
-<li>Use geographical data instead of the socio-economic questionnaire as the predictors to build the model (it might have been easier to start this way).</li>
+<li>Use unsupervised learning to see if I can build different models for different subsets of the dataset</li>
+<li>Use k-fold cross-validation instead of LOOCV. While LOOCV gives an almost unbiased MSE, it might overstimate a bit. k-fold cross-validation might give a more accurate estimate of the true (it has less variance), and I would like to compare their results.</li>
+<li>Use geographical data instead of the socio-economic questionnaire as the predictors to build the model (might have been easier to start this way).</li>
 </ul>
 </div>
 </div>
@@ -3466,7 +3247,7 @@ foo<span class="p">[</span><span class="kp">order</span><span class="p">(</span>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Observation: the piece of code below removes the data points for which infrequent levels from factor variables occur. I sometimes ran into the problem that very infrequent levels (e.g. very very high family income) would only appear in the test set. This was an issue because the model would have no coefficient for that particular level, so I got an error when it appeared in the test set and I tried to get predictions.</p>
+<p>Observation: the piece of code below removes infrequent levels from factor variables in the dataset. I sometimes ran into the problem that very infrequent levels (e.g. very very high family income) would only appear in the test set. This was an issue because the model would have no coefficient for that particular level, so I got an error when it appeared in the test set and I tried to get predictions.</p>
 </div>
 </div>
 </div>
